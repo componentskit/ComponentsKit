@@ -102,7 +102,7 @@ extension SegmentedControlVM {
     case .none, .full, .custom:
       return componentRadius
     case .small, .medium, .large:
-      return max(0, componentRadius - self.outerPaddings / 2)
+      return max(0, componentRadius - self.outerPaddings)
     }
   }
   func preferredFont(for id: ID) -> UniversalFont {
