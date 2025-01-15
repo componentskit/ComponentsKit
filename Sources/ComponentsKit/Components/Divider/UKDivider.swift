@@ -32,7 +32,7 @@ open class UKDivider: UIView, UKComponent {
     fatalError("init(coder:) has not been implemented")
   }
 
-  // MARK: - Setup
+  // MARK: - Style
 
   private func style() {
     self.backgroundColor = self.model.lineColor.uiColor

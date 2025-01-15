@@ -129,3 +129,13 @@ extension AvatarVM {
     }
   }
 }
+
+// MARK: - UIKit Helpers
+
+extension AvatarVM {
+  func shouldUpdateImage(_ oldModel: Self) -> Bool {
+    return self.imageSrc != oldModel.imageSrc
+    || self.placeholder != oldModel.placeholder
+    || self.color != oldModel.color
+  }
+}

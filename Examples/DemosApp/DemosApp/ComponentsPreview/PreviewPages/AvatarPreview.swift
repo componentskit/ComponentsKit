@@ -9,6 +9,10 @@ struct AvatarPreview: View {
   
   var body: some View {
     VStack {
+      PreviewWrapper(title: "UIKit") {
+        UKAvatar(model: self.model)
+          .preview
+      }
       PreviewWrapper(title: "SwiftUI") {
         SUAvatar(model: self.model)
       }
