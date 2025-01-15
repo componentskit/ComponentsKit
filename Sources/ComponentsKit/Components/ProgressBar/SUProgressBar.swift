@@ -89,7 +89,7 @@ public struct SUProgressBar: View {
 
 // MARK: - Helpers
 
-struct StripesShape: Shape {
+struct StripesShape: Shape, @unchecked Sendable {
   var model: ProgressBarVM
 
   func path(in rect: CGRect) -> Path {
