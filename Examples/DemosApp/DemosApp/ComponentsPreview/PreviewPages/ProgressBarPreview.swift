@@ -9,7 +9,7 @@ struct ProgressBarPreview: View {
   private let progressBar = UKProgressBar(initialValue: Self.initialValue, model: Self.initialModel)
 
   private let timer = Timer
-    .publish(every: 0.1, on: .main, in: .common)
+    .publish(every: 0.5, on: .main, in: .common)
     .autoconnect()
   
   var body: some View {
@@ -43,7 +43,11 @@ struct ProgressBarPreview: View {
     }
     .onReceive(self.timer) { _ in
       if self.currentValue < self.model.maxValue {
-        self.currentValue += (self.model.maxValue - self.model.minValue) / 100
+        let step = (self.model.maxValue - self.model.minValue) / 100
+        self.currentValue = min(
+          self.model.maxValue,
+          self.currentValue + CGFloat(Int.random(in: 1...20)) * step
+        )
       } else {
         self.currentValue = self.model.minValue
       }
