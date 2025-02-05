@@ -112,8 +112,8 @@ public struct SUCircularProgress: View {
       )
     }
     .trim(
-      from: self.model.backgroundArcStart(for: self.progress),
-      to: self.model.backgroundArcEnd(for: self.progress)
+      from: self.model.stripedArcStart(for: self.progress),
+      to: self.model.stripedArcEnd(for: self.progress)
     )
     .stroke(
       .clear,
@@ -136,8 +136,8 @@ public struct SUCircularProgress: View {
             )
           }
           .trim(
-            from: self.model.backgroundArcStart(for: self.progress),
-            to: self.model.backgroundArcEnd(for: self.progress)
+            from: self.model.stripedArcStart(for: self.progress),
+            to: self.model.stripedArcEnd(for: self.progress)
           )
           .stroke(
             style: StrokeStyle(

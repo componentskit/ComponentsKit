@@ -118,23 +118,34 @@ extension CircularProgressVM {
     return max(0, min(1, normalized))
   }
 
-  func backgroundArcStart(for normalized: CGFloat) -> CGFloat {
+  func stripedArcStart(for normalized: CGFloat) -> CGFloat {
     let gapValue = self.gap(for: normalized)
     return max(0, min(1, normalized + gapValue))
   }
 
-  func backgroundArcEnd(for normalized: CGFloat) -> CGFloat {
+  func stripedArcEnd(for normalized: CGFloat) -> CGFloat {
     let gapValue = self.gap(for: normalized)
     return 1 - gapValue
   }
 }
 
 extension CircularProgressVM {
-  public func progress(for currentValue: CGFloat) -> CGFloat {
+  func progress(for currentValue: CGFloat) -> CGFloat {
     let range = self.maxValue - self.minValue
     guard range > 0 else { return 0 }
     let normalized = (currentValue - self.minValue) / range
     return max(0, min(1, normalized))
+  }
+}
+
+// MARK: - UIKit Helpers
+
+extension CircularProgressVM {
+  func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
+    return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
+  }
+  func shouldInvalidateIntrinsicContentSize(_ oldValue: Self) -> Bool {
+    return self.preferredSize != oldValue.preferredSize
   }
 }
 
