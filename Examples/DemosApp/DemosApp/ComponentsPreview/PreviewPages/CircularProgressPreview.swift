@@ -6,36 +6,24 @@ struct CircularProgressPreview: View {
   @State private var model = Self.initialModel
   @State private var currentValue: CGFloat = Self.initialValue
   
-  private let circularProgress = UKCircularProgress(
-    model: Self.initialModel
-  )
-  
   private let timer = Timer
     .publish(every: 0.5, on: .main, in: .common)
     .autoconnect()
-  
+
   var body: some View {
     VStack {
-      PreviewWrapper(title: "UIKit") {
-        self.circularProgress
-          .preview
-          .onAppear {
-            self.circularProgress.currentValue = Self.initialValue
-            self.circularProgress.model = Self.initialModel
-          }
-          .onChange(of: model) { newModel in
-            self.circularProgress.model = newModel
-          }
-          .onChange(of: self.currentValue) { newValue in
-            self.circularProgress.currentValue = newValue
-          }
-      }
       PreviewWrapper(title: "SwiftUI") {
         SUCircularProgress(currentValue: self.currentValue, model: self.model)
       }
       Form {
         ComponentColorPicker(selection: self.$model.color)
-        CaptionFontPicker(selection: self.$model.font)
+        Picker("Font", selection: self.$model.font) {
+          Text("Default").tag(Optional<UniversalFont>.none)
+          Text("Small").tag(UniversalFont.smButton)
+          Text("Medium").tag(UniversalFont.mdButton)
+          Text("Large").tag(UniversalFont.lgButton)
+          Text("Custom: system bold of size 16").tag(UniversalFont.system(size: 16, weight: .bold))
+        }
         Picker("Line Width", selection: self.$model.lineWidth) {
           Text("Default").tag(Optional<CGFloat>.none)
           Text("2").tag(Optional<CGFloat>.some(2))
@@ -68,9 +56,8 @@ struct CircularProgressPreview: View {
   private static var initialValue: Double {
     return 0.0
   }
-  
   private static var initialModel = CircularProgressVM {
-    $0.label = "0%"
+    $0.label = "0"
     $0.style = .light
   }
 }

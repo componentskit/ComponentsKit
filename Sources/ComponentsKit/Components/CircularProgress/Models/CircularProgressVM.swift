@@ -81,24 +81,24 @@ extension CircularProgressVM {
       return .lgCaption
     }
   }
-  var stripeWidth: CGFloat {
-    return 0.5
-  }
   private func stripesCGPath(in rect: CGRect) -> CGMutablePath {
+    let stripeWidth: CGFloat = 0.5
     let stripeSpacing: CGFloat = 3
     let stripeAngle: Angle = .degrees(135)
 
     let path = CGMutablePath()
     let step = stripeWidth + stripeSpacing
     let radians = stripeAngle.radians
-
-    let dx: CGFloat = rect.height * tan(radians)
-    for x in stride(from: 0, through: rect.width + rect.height, by: step) {
+    let dx = rect.height * tan(radians)
+    for x in stride(from: dx, through: rect.width + rect.height, by: step) {
       let topLeft = CGPoint(x: x, y: 0)
-      let bottomRight = CGPoint(x: x + dx, y: rect.height)
-
+      let topRight = CGPoint(x: x + stripeWidth, y: 0)
+      let bottomLeft = CGPoint(x: x + dx, y: rect.height)
+      let bottomRight = CGPoint(x: x + stripeWidth + dx, y: rect.height)
       path.move(to: topLeft)
+      path.addLine(to: topRight)
       path.addLine(to: bottomRight)
+      path.addLine(to: bottomLeft)
       path.closeSubpath()
     }
     return path
@@ -107,68 +107,34 @@ extension CircularProgressVM {
 
 extension CircularProgressVM {
   func gap(for normalized: CGFloat) -> CGFloat {
-    return normalized > 0 ? 0.05 : 0
+    normalized > 0 ? 0.05 : 0
   }
 
-  func stripedArcStart(for normalized: CGFloat) -> CGFloat {
+  func progressArcStart(for normalized: CGFloat) -> CGFloat {
+    return 0
+  }
+
+  func progressArcEnd(for normalized: CGFloat) -> CGFloat {
+    return max(0, min(1, normalized))
+  }
+
+  func backgroundArcStart(for normalized: CGFloat) -> CGFloat {
     let gapValue = self.gap(for: normalized)
     return max(0, min(1, normalized + gapValue))
   }
 
-  func stripedArcEnd(for normalized: CGFloat) -> CGFloat {
+  func backgroundArcEnd(for normalized: CGFloat) -> CGFloat {
     let gapValue = self.gap(for: normalized)
     return 1 - gapValue
   }
 }
 
 extension CircularProgressVM {
-  func progress(for currentValue: CGFloat) -> CGFloat {
+  public func progress(for currentValue: CGFloat) -> CGFloat {
     let range = self.maxValue - self.minValue
     guard range > 0 else { return 0 }
     let normalized = (currentValue - self.minValue) / range
     return max(0, min(1, normalized))
-  }
-}
-
-// MARK: - UIKit Helpers
-
-extension CircularProgressVM {
-  var isStripesLayerHidden: Bool {
-    switch self.style {
-    case .light:
-      return true
-    case .striped:
-      return false
-    }
-  }
-  var isBackgroundLayerHidden: Bool {
-    switch self.style {
-    case .light:
-      return false
-    case .striped:
-      return true
-    }
-  }
-  func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
-    let center = CGPoint(x: rect.midX, y: rect.midY)
-    let path = UIBezierPath(cgPath: self.stripesCGPath(in: rect))
-    var transform = CGAffineTransform.identity
-    transform = transform
-      .translatedBy(x: center.x, y: center.y)
-      .rotated(by: -CGFloat.pi / 2)
-      .translatedBy(x: -center.x, y: -center.y)
-    path.apply(transform)
-    return path
-  }
-  func shouldInvalidateIntrinsicContentSize(_ oldModel: Self) -> Bool {
-    return self.preferredSize != oldModel.preferredSize
-  }
-  func shouldUpdateText(_ oldModel: Self) -> Bool {
-    return self.label != oldModel.label
-  }
-  func shouldRecalculateProgress(_ oldModel: Self) -> Bool {
-    return self.minValue != oldModel.minValue
-    || self.maxValue != oldModel.maxValue
   }
 }
 

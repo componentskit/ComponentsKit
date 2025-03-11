@@ -102,33 +102,52 @@ public struct SUCircularProgress: View {
   }
 
   var stripedBackground: some View {
-    StripesShapeCircularProgress(model: self.model)
-      .stroke(
-        self.model.color.main.color,
-        style: StrokeStyle(lineWidth: self.model.stripeWidth)
+    Path { path in
+      path.addArc(
+        center: self.model.center,
+        radius: self.model.radius,
+        startAngle: .radians(0),
+        endAngle: .radians(2 * .pi),
+        clockwise: false
       )
-      .mask {
-        Path { maskPath in
-          maskPath.addArc(
-            center: self.model.center,
-            radius: self.model.radius,
-            startAngle: .radians(0),
-            endAngle: .radians(2 * .pi),
-            clockwise: false
+    }
+    .trim(
+      from: self.model.backgroundArcStart(for: self.progress),
+      to: self.model.backgroundArcEnd(for: self.progress)
+    )
+    .stroke(
+      .clear,
+      style: StrokeStyle(
+        lineWidth: self.model.circularLineWidth,
+        lineCap: .round
+      )
+    )
+    .overlay {
+      StripesShapeCircularProgress(model: self.model)
+        .foregroundColor(self.model.color.main.color)
+        .mask {
+          Path { maskPath in
+            maskPath.addArc(
+              center: self.model.center,
+              radius: self.model.radius,
+              startAngle: .radians(0),
+              endAngle: .radians(2 * .pi),
+              clockwise: false
+            )
+          }
+          .trim(
+            from: self.model.backgroundArcStart(for: self.progress),
+            to: self.model.backgroundArcEnd(for: self.progress)
+          )
+          .stroke(
+            style: StrokeStyle(
+              lineWidth: self.model.circularLineWidth,
+              lineCap: .round
+            )
           )
         }
-        .trim(
-          from: self.model.stripedArcStart(for: self.progress),
-          to: self.model.stripedArcEnd(for: self.progress)
-        )
-        .stroke(
-          style: StrokeStyle(
-            lineWidth: self.model.circularLineWidth,
-            lineCap: .round
-          )
-        )
-      }
-      .rotationEffect(.degrees(-90))
+    }
+    .rotationEffect(.degrees(-90))
   }
 }
 
