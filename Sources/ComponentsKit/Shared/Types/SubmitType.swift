@@ -26,7 +26,7 @@ public enum SubmitType {
 // MARK: - UIKit Helpers
 
 extension SubmitType {
-  var returnKeyType: UIReturnKeyType {
+  public var returnKeyType: UIReturnKeyType {
     switch self {
     case .done:
       return .done
@@ -53,7 +53,7 @@ extension SubmitType {
 // MARK: - SwiftUI Helpers
 
 extension SubmitType {
-  var submitLabel: SubmitLabel {
+  public var submitLabel: SubmitLabel {
     switch self {
     case .done:
       return .done

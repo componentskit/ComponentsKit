@@ -195,7 +195,7 @@ extension View {
   ///       }
   ///       .bottomModal(
   ///         item: $selectedItem,
-  ///         model: BottomModalVM(),
+  ///         model: { _ in BottomModalVM() },
   ///         onDismiss: {
   ///           print("Modal dismissed")
   ///         },
@@ -218,7 +218,7 @@ extension View {
   ///   ```
   public func bottomModal<Item: Identifiable, Header: View, Body: View, Footer: View>(
     item: Binding<Item?>,
-    model: BottomModalVM = .init(),
+    model: @escaping (Item) -> BottomModalVM = { _ in .init() },
     onDismiss: (() -> Void)? = nil,
     @ViewBuilder header: @escaping (Item) -> Header,
     @ViewBuilder body: @escaping (Item) -> Body,
@@ -226,7 +226,7 @@ extension View {
   ) -> some View {
     return self.modal(
       item: item,
-      transitionDuration: model.transition.value,
+      transitionDuration: { model($0).transition.value },
       onDismiss: onDismiss,
       content: { unwrappedItem in
         SUBottomModal(
@@ -242,7 +242,7 @@ extension View {
               }
             }
           ),
-          model: model,
+          model: model(unwrappedItem),
           header: { header(unwrappedItem) },
           body: { body(unwrappedItem) },
           footer: { footer(unwrappedItem) }
@@ -289,7 +289,7 @@ extension View {
   ///       }
   ///       .bottomModal(
   ///         item: $selectedItem,
-  ///         model: BottomModalVM(),
+  ///         model: { _ in BottomModalVM() },
   ///         onDismiss: {
   ///           print("Modal dismissed")
   ///         },
@@ -302,7 +302,7 @@ extension View {
   ///   ```
   public func bottomModal<Item: Identifiable, Body: View>(
     item: Binding<Item?>,
-    model: BottomModalVM = .init(),
+    model: @escaping (Item) -> BottomModalVM = { _ in .init() },
     onDismiss: (() -> Void)? = nil,
     @ViewBuilder body: @escaping (Item) -> Body
   ) -> some View {

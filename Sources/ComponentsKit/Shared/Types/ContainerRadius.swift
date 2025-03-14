@@ -17,12 +17,12 @@ public enum ContainerRadius: Hashable {
 }
 
 extension ContainerRadius {
-  var value: CGFloat {
+  public var value: CGFloat {
     return switch self {
     case .none: CGFloat(0)
-    case .small: ComponentsKitConfig.shared.layout.containerRadius.small
-    case .medium: ComponentsKitConfig.shared.layout.containerRadius.medium
-    case .large: ComponentsKitConfig.shared.layout.containerRadius.large
+    case .small: Theme.current.layout.containerRadius.small
+    case .medium: Theme.current.layout.containerRadius.medium
+    case .large: Theme.current.layout.containerRadius.large
     case .custom(let value): value
     }
   }

@@ -15,16 +15,11 @@ import UIKit
 ///   }
 /// )
 /// ```
-open class UKCard: UIView, UKComponent {
-  // MARK: - Typealiases
-
-  /// A closure that returns the content view to be displayed inside the card.
-  public typealias Content = () -> UIView
-
+open class UKCard<Content: UIView>: UIView, UKComponent {
   // MARK: - Subviews
 
   /// The primary content of the card, provided as a custom view.
-  public let content: UIView
+  public let content: Content
 
   // MARK: - Properties
 
@@ -46,7 +41,7 @@ open class UKCard: UIView, UKComponent {
   ///   - content: The content that is displayed in the card.
   public init(
     model: CardVM = .init(),
-    content: @escaping Content
+    content: @escaping () -> Content
   ) {
     self.model = model
     self.content = content()

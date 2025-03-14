@@ -27,8 +27,6 @@ open class UKButton: UIView, UKComponent {
     }
   }
 
-  private var titleLabelConstraints: LayoutConstraints = .init()
-
   // MARK: Subviews
 
   /// A label that displays the title from the model.
@@ -85,11 +83,7 @@ open class UKButton: UIView, UKComponent {
   // MARK: Layout
 
   private func layout() {
-    self.titleLabelConstraints = self.titleLabel.horizontally(self.model.horizontalPadding)
     self.titleLabel.center()
-
-    self.titleLabelConstraints.leading?.priority = .defaultHigh
-    self.titleLabelConstraints.trailing?.priority = .defaultHigh
   }
 
   open override func layoutSubviews() {
@@ -106,10 +100,7 @@ open class UKButton: UIView, UKComponent {
     self.style()
 
     if self.model.shouldUpdateSize(oldModel) {
-      self.titleLabelConstraints.leading?.constant = self.model.horizontalPadding
-      self.titleLabelConstraints.trailing?.constant = -self.model.horizontalPadding
       self.invalidateIntrinsicContentSize()
-      self.setNeedsLayout()
     }
   }
 

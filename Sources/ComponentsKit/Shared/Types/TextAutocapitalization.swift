@@ -14,7 +14,7 @@ public enum TextAutocapitalization {
 }
 
 extension TextAutocapitalization {
-  var textAutocapitalizationType: UITextAutocapitalizationType {
+  public var textAutocapitalizationType: UITextAutocapitalizationType {
     switch self {
     case .never:
       return .none
@@ -29,7 +29,7 @@ extension TextAutocapitalization {
 }
 
 extension TextAutocapitalization {
-  var textInputAutocapitalization: TextInputAutocapitalization {
+  public var textInputAutocapitalization: TextInputAutocapitalization {
     switch self {
     case .never:
       return .never

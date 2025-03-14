@@ -1,12 +1,12 @@
 import Foundation
 
-extension ComponentsKitConfig {
+extension Theme {
   /// A structure that defines the layout-related configurations for components in the framework.
-  public struct Layout: Initializable, Updatable {
+  public struct Layout: Initializable, Updatable, Equatable {
     // MARK: - Radius
 
     /// A structure representing radius values for components.
-    public struct Radius {
+    public struct Radius: Equatable {
       /// The small radius size.
       public var small: CGFloat
       /// The medium radius size.
@@ -30,7 +30,7 @@ extension ComponentsKitConfig {
     // MARK: - BorderWidth
 
     /// A structure representing border width values for components.
-    public struct BorderWidth {
+    public struct BorderWidth: Equatable {
       /// The small border width.
       public var small: CGFloat
       /// The medium border width.
@@ -56,7 +56,7 @@ extension ComponentsKitConfig {
     /// A structure representing animation scale values for components.
     ///
     /// The values must be between `0.0` and `1.0`.
-    public struct AnimationScale {
+    public struct AnimationScale: Equatable {
       /// The small animation scale.
       public var small: CGFloat
       /// The medium animation scale.
@@ -88,7 +88,7 @@ extension ComponentsKitConfig {
     // MARK: - Shadow
 
     /// A structure that defines the parameters for a shadow effect.
-    public struct ShadowParams {
+    public struct ShadowParams: Equatable {
       /// The blur radius of the shadow.
       ///
       /// A larger radius results in a more diffuse shadow.
@@ -119,7 +119,7 @@ extension ComponentsKitConfig {
     }
 
     /// A structure that defines shadow presets for small, medium, and large shadows.
-    public struct Shadow {
+    public struct Shadow: Equatable {
       /// The shadow parameters for a small shadow.
       public var small: ShadowParams
 
@@ -147,7 +147,7 @@ extension ComponentsKitConfig {
     // MARK: - Typography
 
     /// A structure representing a set of fonts for different component sizes.
-    public struct FontSet {
+    public struct FontSet: Equatable {
       /// The small font.
       public var small: UniversalFont
       /// The medium font.
@@ -169,7 +169,7 @@ extension ComponentsKitConfig {
     }
 
     /// A structure representing typography settings for various components.
-    public struct Typography {
+    public struct Typography: Equatable {
       /// The font set for headlines.
       public var headline: FontSet
       /// The font set for body text.
@@ -260,7 +260,7 @@ extension ComponentsKitConfig {
       headline: .init(
         small: .system(size: 14, weight: .semibold),
         medium: .system(size: 20, weight: .semibold),
-        large: .system(size: 28, weight: .semibold)
+        large: .system(size: 24, weight: .semibold)
       ),
       body: .init(
         small: .system(size: 14, weight: .regular),
