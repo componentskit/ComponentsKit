@@ -19,11 +19,11 @@ extension BorderWidth {
     case .none:
       return 0.0
     case .small:
-      return ComponentsKitConfig.shared.layout.borderWidth.small
+      return Theme.current.layout.borderWidth.small
     case .medium:
-      return ComponentsKitConfig.shared.layout.borderWidth.medium
+      return Theme.current.layout.borderWidth.medium
     case .large:
-      return ComponentsKitConfig.shared.layout.borderWidth.large
+      return Theme.current.layout.borderWidth.large
     }
   }
 }

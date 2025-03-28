@@ -118,9 +118,6 @@ open class UKTextInput: UIView, UKComponent {
 
     self.style()
 
-    if self.model.shouldUpdateCornerRadius(oldModel) {
-      self.updateCornerRadius()
-    }
     if self.model.shouldUpdateLayout(oldModel) {
       self.invalidateIntrinsicContentSize()
       self.setNeedsLayout()
@@ -171,7 +168,7 @@ open class UKTextInput: UIView, UKComponent {
   }
 
   private func updateCornerRadius() {
-    self.layer.cornerRadius = self.model.adaptedCornerRadius.value(for: self.bounds.height)
+    self.layer.cornerRadius = self.model.adaptedCornerRadius(for: self.bounds.height)
   }
 }
 
@@ -189,7 +186,7 @@ extension UKTextInput {
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: TextInputVM) {
       view.backgroundColor = model.backgroundColor.uiColor
-      view.layer.cornerRadius = model.adaptedCornerRadius.value(for: view.bounds.height)
+      view.layer.cornerRadius = model.adaptedCornerRadius(for: view.bounds.height)
     }
 
     static func textView(

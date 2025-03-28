@@ -69,23 +69,6 @@ public struct TextInputVM: ComponentVM {
 // MARK: - Shared Helpers
 
 extension TextInputVM {
-  var adaptedCornerRadius: ComponentRadius {
-    switch self.cornerRadius {
-    case .none:
-      return .none
-    case .small:
-      return .small
-    case .medium:
-      return .medium
-    case .large:
-      return .large
-    case .full:
-      return .custom(self.height(forRows: 1) / 2)
-    case .custom(let value):
-      return .custom(value)
-    }
-  }
-
   var preferredFont: UniversalFont {
     if let font {
       return font
@@ -140,6 +123,17 @@ extension TextInputVM {
     }
   }
 
+  func adaptedCornerRadius(for height: CGFloat = 10_000) -> CGFloat {
+    switch self.cornerRadius {
+    case .none, .small, .medium, .large, .full:
+      let value = self.cornerRadius.value(for: height)
+      let maxValue = ComponentRadius.custom(self.height(forRows: 1) / 2).value(for: height)
+      return min(value, maxValue)
+    case .custom(let value):
+      return ComponentRadius.custom(value).value(for: height)
+    }
+  }
+
   private func height(forRows rows: Int) -> CGFloat {
     if rows < 1 {
       assertionFailure("Number of rows in TextInput must be greater than or equal to 1")
@@ -161,9 +155,5 @@ extension TextInputVM {
 extension TextInputVM {
   var autocorrectionType: UITextAutocorrectionType {
     return self.isAutocorrectionEnabled ? .yes : .no
-  }
-
-  func shouldUpdateCornerRadius(_ oldModel: Self) -> Bool {
-    return self.adaptedCornerRadius != oldModel.adaptedCornerRadius
   }
 }

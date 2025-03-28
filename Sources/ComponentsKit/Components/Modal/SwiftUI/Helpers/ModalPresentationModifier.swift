@@ -23,8 +23,13 @@ struct ModalPresentationModifier<Modal: View>: ViewModifier {
 
   func body(content: Content) -> some View {
     content
-      .onChange(of: self.isContentVisible) { newValue in
-        if newValue {
+      .onAppear {
+        if self.isContentVisible {
+          self.isPresented = true
+        }
+      }
+      .onChange(of: self.isContentVisible) { isVisible in
+        if isVisible {
           self.isPresented = true
         } else {
           DispatchQueue.main.asyncAfter(deadline: .now() + self.transitionDuration) {

@@ -41,14 +41,14 @@ struct App: View {
         NavigationLinkWithTitle("Loading") {
           LoadingPreview()
         }
-        NavigationLinkWithTitle("Progress Bar") {
-          ProgressBarPreview()
-        }
         NavigationLinkWithTitle("Modal (Bottom)") {
           BottomModalPreview()
         }
         NavigationLinkWithTitle("Modal (Center)") {
           CenterModalPreview()
+        }
+        NavigationLinkWithTitle("Progress Bar") {
+          ProgressBarPreview()
         }
         NavigationLinkWithTitle("Radio Group") {
           RadioGroupPreview()

@@ -261,6 +261,7 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
           let segment = self.segments.first(where: { segment in
             segment.bounds.contains(touch.location(in: segment))
           }),
+          self.model.item(for: segment.id)?.isEnabled == true,
           self.selectedId != segment.id,
           let currentlySelectedSegment = self.segment(for: self.selectedId)
     else {

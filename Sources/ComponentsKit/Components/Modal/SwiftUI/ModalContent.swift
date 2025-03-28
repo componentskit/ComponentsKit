@@ -43,7 +43,7 @@ struct ModalContent<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
           .padding(.top, self.bodyTopPadding)
           .padding(.bottom, self.bodyBottomPadding)
       }
-      .frame(maxHeight: self.scrollViewMaxHeight)
+      .frame(maxWidth: .infinity, maxHeight: self.scrollViewMaxHeight)
       .disableScrollWhenContentFits()
 
       self.contentFooter()

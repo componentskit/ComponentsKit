@@ -1,8 +1,8 @@
 import Foundation
 
-extension ComponentsKitConfig {
+extension Theme {
   /// Defines a set of colors that are used for styling components and interfaces.
-  public struct Palette: Initializable, Updatable {
+  public struct Palette: Initializable, Updatable, Equatable {
     /// The color for the main background of the interface.
     public var background: UniversalColor = .themed(
       light: .hex("#FFFFFF"),
@@ -122,23 +122,23 @@ extension ComponentsKitConfig {
 extension ComponentColor {
   /// The primary color.
   public static var primary: Self {
-    return ComponentsKitConfig.shared.colors.primary
+    return Theme.current.colors.primary
   }
   /// The accent color.
   public static var accent: Self {
-    return ComponentsKitConfig.shared.colors.accent
+    return Theme.current.colors.accent
   }
   /// The success state color, used for indicating positive actions or statuses.
   public static var success: Self {
-    return ComponentsKitConfig.shared.colors.success
+    return Theme.current.colors.success
   }
   /// The warning state color, used for indicating caution or non-critical alerts.
   public static var warning: Self {
-    return ComponentsKitConfig.shared.colors.warning
+    return Theme.current.colors.warning
   }
   /// The danger state color, used for indicating errors, destructive actions, or critical alerts.
   public static var danger: Self {
-    return ComponentsKitConfig.shared.colors.danger
+    return Theme.current.colors.danger
   }
 }
 
@@ -161,58 +161,74 @@ extension UniversalColor {
 extension UniversalColor {
   /// The color for the main background of the interface.
   public static var background: Self {
-    return ComponentsKitConfig.shared.colors.background
+    return Theme.current.colors.background
   }
   /// The color for the secondary background of the interface.
   public static var secondaryBackground: Self {
-    return ComponentsKitConfig.shared.colors.secondaryBackground
+    return Theme.current.colors.secondaryBackground
   }
   /// The color for text labels that contain primary content.
   public static var foreground: Self {
-    return ComponentsKitConfig.shared.colors.foreground
+    return Theme.current.colors.foreground
   }
   /// The color for text labels that contain secondary content.
   public static var secondaryForeground: Self {
-    return ComponentsKitConfig.shared.colors.secondaryForeground
+    return Theme.current.colors.secondaryForeground
   }
   /// The color for thin borders or divider lines.
   public static var divider: Self {
-    return ComponentsKitConfig.shared.colors.divider
+    return Theme.current.colors.divider
   }
   /// The first content color.
   public static var content1: Self {
-    return ComponentsKitConfig.shared.colors.content1
+    return Theme.current.colors.content1
   }
   /// The second content color.
   public static var content2: Self {
-    return ComponentsKitConfig.shared.colors.content2
+    return Theme.current.colors.content2
   }
   /// The third content color.
   public static var content3: Self {
-    return ComponentsKitConfig.shared.colors.content3
+    return Theme.current.colors.content3
   }
   /// The forth content color.
   public static var content4: Self {
-    return ComponentsKitConfig.shared.colors.content4
+    return Theme.current.colors.content4
   }
   /// The primary color.
   public static var primary: Self {
-    return ComponentsKitConfig.shared.colors.primary.main
+    return Theme.current.colors.primary.main
   }
   /// The accent color.
   public static var accent: Self {
-    return ComponentsKitConfig.shared.colors.accent.main
+    return Theme.current.colors.accent.main
+  }
+  /// The accent background color.
+  public static var accentBackground: Self {
+    return Theme.current.colors.accent.background
   }
   /// The success state color, used for indicating positive actions or statuses.
   public static var success: Self {
-    return ComponentsKitConfig.shared.colors.success.main
+    return Theme.current.colors.success.main
+  }
+  /// The success background color.
+  public static var successBackground: Self {
+    return Theme.current.colors.success.background
   }
   /// The warning state color, used for indicating caution or non-critical alerts.
   public static var warning: Self {
-    return ComponentsKitConfig.shared.colors.warning.main
+    return Theme.current.colors.warning.main
+  }
+  /// The warning background color.
+  public static var warningBackground: Self {
+    return Theme.current.colors.warning.background
   }
   /// The danger state color, used for indicating errors, destructive actions, or critical alerts.
   public static var danger: Self {
-    return ComponentsKitConfig.shared.colors.danger.main
+    return Theme.current.colors.danger.main
+  }
+  /// The danger background color.
+  public static var dangerBackground: Self {
+    return Theme.current.colors.danger.background
   }
 }

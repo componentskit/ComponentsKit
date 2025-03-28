@@ -21,32 +21,32 @@ public enum Shadow: Hashable {
 }
 
 extension Shadow {
-  var radius: CGFloat {
+ public var radius: CGFloat {
     return switch self {
     case .none: CGFloat(0)
-    case .small: ComponentsKitConfig.shared.layout.shadow.small.radius
-    case .medium: ComponentsKitConfig.shared.layout.shadow.medium.radius
-    case .large: ComponentsKitConfig.shared.layout.shadow.large.radius
+    case .small: Theme.current.layout.shadow.small.radius
+    case .medium: Theme.current.layout.shadow.medium.radius
+    case .large: Theme.current.layout.shadow.large.radius
     case .custom(let radius, _, _): radius
     }
   }
 
-  var offset: CGSize {
+  public var offset: CGSize {
     return switch self {
     case .none: .zero
-    case .small: ComponentsKitConfig.shared.layout.shadow.small.offset
-    case .medium: ComponentsKitConfig.shared.layout.shadow.medium.offset
-    case .large: ComponentsKitConfig.shared.layout.shadow.large.offset
+    case .small: Theme.current.layout.shadow.small.offset
+    case .medium: Theme.current.layout.shadow.medium.offset
+    case .large: Theme.current.layout.shadow.large.offset
     case .custom(_, let offset, _): offset
     }
   }
 
-  var color: UniversalColor {
+  public var color: UniversalColor {
     return switch self {
     case .none: .clear
-    case .small: ComponentsKitConfig.shared.layout.shadow.small.color
-    case .medium: ComponentsKitConfig.shared.layout.shadow.medium.color
-    case .large: ComponentsKitConfig.shared.layout.shadow.large.color
+    case .small: Theme.current.layout.shadow.small.color
+    case .medium: Theme.current.layout.shadow.medium.color
+    case .large: Theme.current.layout.shadow.large.color
     case .custom(_, _, let color): color
     }
   }
@@ -55,7 +55,7 @@ extension Shadow {
 // MARK: - UIKit + Shadow
 
 extension UIView {
-  func shadow(_ shadow: Shadow) {
+  public func shadow(_ shadow: Shadow) {
     self.layer.shadowRadius = shadow.radius
     self.layer.shadowOffset = shadow.offset
     self.layer.shadowColor = shadow.color.cgColor
@@ -66,7 +66,7 @@ extension UIView {
 // MARK: - SwiftUI + Shadow
 
 extension View {
-  func shadow(_ shadow: Shadow) -> some View {
+  public func shadow(_ shadow: Shadow) -> some View {
     self.shadow(
       color: shadow.color.color,
       radius: shadow.radius,

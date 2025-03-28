@@ -6,8 +6,8 @@ public struct SUProgressBar: View {
 
   /// A model that defines the appearance properties.
   public var model: ProgressBarVM
-  /// A binding to control the current value.
-  @Binding public var currentValue: CGFloat
+  /// The current progress value.
+  public var currentValue: CGFloat
 
   private var progress: CGFloat {
     self.model.progress(for: self.currentValue)
@@ -17,13 +17,13 @@ public struct SUProgressBar: View {
 
   /// Initializer.
   /// - Parameters:
-  ///   - currentValue: A binding to the current value.
+  ///   - currentValue: The current progress value.
   ///   - model: A model that defines the appearance properties.
   public init(
-    currentValue: Binding<CGFloat>,
+    currentValue: CGFloat,
     model: ProgressBarVM = .init()
   ) {
-    self._currentValue = currentValue
+    self.currentValue = currentValue
     self.model = model
   }
 

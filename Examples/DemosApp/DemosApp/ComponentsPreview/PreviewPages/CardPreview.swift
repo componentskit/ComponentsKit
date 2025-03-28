@@ -18,10 +18,10 @@ struct CardPreview: View {
         Picker("Background Color", selection: self.$model.backgroundColor) {
           Text("Default").tag(Optional<UniversalColor>.none)
           Text("Secondary Background").tag(UniversalColor.secondaryBackground)
-          Text("Accent Background").tag(ComponentColor.accent.background)
-          Text("Success Background").tag(ComponentColor.success.background)
-          Text("Warning Background").tag(ComponentColor.warning.background)
-          Text("Danger Background").tag(ComponentColor.danger.background)
+          Text("Accent Background").tag(UniversalColor.accentBackground)
+          Text("Success Background").tag(UniversalColor.successBackground)
+          Text("Warning Background").tag(UniversalColor.warningBackground)
+          Text("Danger Background").tag(UniversalColor.dangerBackground)
         }
         BorderWidthPicker(selection: self.$model.borderWidth)
         Picker("Content Paddings", selection: self.$model.contentPaddings) {
@@ -37,7 +37,7 @@ struct CardPreview: View {
           Text("Small").tag(Shadow.small)
           Text("Medium").tag(Shadow.medium)
           Text("Large").tag(Shadow.large)
-          Text("Custom").tag(Shadow.custom(20.0, .zero, ComponentColor.accent.background))
+          Text("Custom").tag(Shadow.custom(20.0, .zero, UniversalColor.accentBackground))
         }
       }
     }

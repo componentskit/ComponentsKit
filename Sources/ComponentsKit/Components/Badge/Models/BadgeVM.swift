@@ -8,23 +8,28 @@ public struct BadgeVM: ComponentVM {
   /// The color of the badge.
   public var color: ComponentColor?
 
-  /// The visual style of the badge.
+  /// The corner radius of the badge.
   ///
-  /// Defaults to `.filled`.
-  public var style: Style = .filled
+  /// Defaults to `.medium`.
+  public var cornerRadius: ComponentRadius = .medium
 
   /// The font used for the badge's text.
   ///
   /// Defaults to `.smButton`.
   public var font: UniversalFont = .smButton
 
-  /// The corner radius of the badge.
+  /// A Boolean value indicating whether the button is enabled or disabled.
   ///
-  /// Defaults to `.medium`.
-  public var cornerRadius: ComponentRadius = .medium
+  /// Defaults to `true`.
+  public var isEnabled: Bool = true
 
   /// Paddings for the badge.
   public var paddings: Paddings = .init(horizontal: 10, vertical: 8)
+
+  /// The visual style of the badge.
+  ///
+  /// Defaults to `.filled`.
+  public var style: Style = .filled
 
   /// Initializes a new instance of `BadgeVM` with default values.
   public init() {}
@@ -35,22 +40,24 @@ public struct BadgeVM: ComponentVM {
 extension BadgeVM {
   /// Returns the background color of the badge based on its style.
   var backgroundColor: UniversalColor {
-    switch self.style {
+    let color = switch self.style {
     case .filled:
-      return self.color?.main ?? .content2
+      self.color?.main ?? .content2
     case .light:
-      return self.color?.background ?? .content1
+      self.color?.background ?? .content1
     }
+    return color.enabled(self.isEnabled)
   }
 
   /// Returns the foreground color of the badge based on its style.
   var foregroundColor: UniversalColor {
-    switch self.style {
+    let color = switch self.style {
     case .filled:
-      return self.color?.contrast ?? .foreground
+      self.color?.contrast ?? .foreground
     case .light:
-      return self.color?.main ?? .foreground
+      self.color?.main ?? .foreground
     }
+    return color.enabled(self.isEnabled)
   }
 }
 

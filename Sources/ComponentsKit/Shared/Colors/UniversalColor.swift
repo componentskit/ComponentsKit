@@ -132,10 +132,10 @@ public struct UniversalColor: Hashable {
   // MARK: - Properties
 
   /// The color used in light mode.
-  let light: ColorRepresentable
+  public let light: ColorRepresentable
 
   /// The color used in dark mode.
-  let dark: ColorRepresentable
+  public let dark: ColorRepresentable
 
   // MARK: - Initialization
 
@@ -206,7 +206,7 @@ public struct UniversalColor: Hashable {
   public func enabled(_ isEnabled: Bool) -> Self {
     return isEnabled
     ? self
-    : self.withOpacity(ComponentsKitConfig.shared.layout.disabledOpacity)
+    : self.withOpacity(Theme.current.layout.disabledOpacity)
   }
 
   /// Returns a new `UniversalColor` by blending the current color with another color.

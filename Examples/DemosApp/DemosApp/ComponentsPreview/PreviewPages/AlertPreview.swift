@@ -84,10 +84,10 @@ struct AlertPreview: View {
         Section("Main Properties") {
           Picker("Background Color", selection: self.$model.backgroundColor) {
             Text("Default").tag(Optional<UniversalColor>.none)
-            Text("Accent Background").tag(ComponentColor.accent.background)
-            Text("Success Background").tag(ComponentColor.success.background)
-            Text("Warning Background").tag(ComponentColor.warning.background)
-            Text("Danger Background").tag(ComponentColor.danger.background)
+            Text("Accent Background").tag(UniversalColor.accentBackground)
+            Text("Success Background").tag(UniversalColor.successBackground)
+            Text("Warning Background").tag(UniversalColor.warningBackground)
+            Text("Danger Background").tag(UniversalColor.dangerBackground)
           }
           BorderWidthPicker(selection: self.$model.borderWidth)
           Toggle("Closes On Overlay Tap", isOn: self.$model.closesOnOverlayTap)
@@ -154,7 +154,7 @@ Enim habitant laoreet inceptos scelerisque senectus, tellus molestie ut. Eros ri
   }
   static let initialSecondaryButton = AlertButtonVM {
     $0.title = SecondaryButtonText.short.rawValue
-    $0.style = .light
+    $0.style = .plain
   }
   
   var primaryButtonVMOrDefault: Binding<AlertButtonVM> {

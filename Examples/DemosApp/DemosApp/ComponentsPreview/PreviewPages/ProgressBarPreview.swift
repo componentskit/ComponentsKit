@@ -26,7 +26,7 @@ struct ProgressBarPreview: View {
           }
       }
       PreviewWrapper(title: "SwiftUI") {
-        SUProgressBar(currentValue: self.$currentValue, model: self.model)
+        SUProgressBar(currentValue: self.currentValue, model: self.model)
       }
       Form {
         ComponentColorPicker(selection: self.$model.color)

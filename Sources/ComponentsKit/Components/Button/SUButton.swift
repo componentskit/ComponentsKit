@@ -56,8 +56,7 @@ private struct CustomButtonStyle: SwiftUI.ButtonStyle {
     configuration.label
       .font(self.model.preferredFont.font)
       .lineLimit(1)
-      .padding(.leading, self.model.horizontalPadding)
-      .padding(.trailing, self.model.horizontalPadding)
+      .padding(.horizontal, self.model.horizontalPadding)
       .frame(maxWidth: self.model.width)
       .frame(height: self.model.height)
       .foregroundStyle(self.model.foregroundColor.color)
