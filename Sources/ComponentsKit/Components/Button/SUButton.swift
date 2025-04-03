@@ -29,25 +29,46 @@ public struct SUButton: View {
   // MARK: Body
 
   public var body: some View {
-    Button(self.model.title, action: self.action)
-      .buttonStyle(CustomButtonStyle(model: self.model))
-      .simultaneousGesture(DragGesture(minimumDistance: 0.0)
-        .onChanged { _ in
-          self.isPressed = true
-        }
-        .onEnded { _ in
-          self.isPressed = false
-        }
-      )
-      .disabled(!self.model.isEnabled)
-      .scaleEffect(
-        self.isPressed ? self.model.animationScale.value : 1,
-        anchor: .center
-      )
+    Button(action: self.action) {
+      HStack(spacing: self.model.contentSpacing) {
+        self.content()
+      }
+      .frame(maxWidth: self.model.width)
+      .frame(height: self.model.height)
+    }
+    .buttonStyle(CustomButtonStyle(model: self.model))
+    .simultaneousGesture(DragGesture(minimumDistance: 0.0)
+      .onChanged { _ in
+        self.isPressed = true
+      }
+      .onEnded { _ in
+        self.isPressed = false
+      }
+    )
+    .disabled(!self.model.isEnabled || self.model.isLoading)
+    .scaleEffect(
+      self.isPressed ? self.model.animationScale.value : 1,
+      anchor: .center
+    )
+  }
+
+  @ViewBuilder
+  private func content() -> some View {
+    switch (self.model.isLoading, self.model.buttonImage, self.model.imageLocation) {
+    case (true, _, _):
+      SULoading(model: self.model.preferredLoadingVM)
+      Text(self.model.title)
+    case (false, let image?, .leading):
+      image
+      Text(self.model.title)
+    case (false, let image?, .trailing):
+      Text(self.model.title)
+      image
+    default:
+      Text(self.model.title)
+    }
   }
 }
-
-// MARK: - Helpers
 
 private struct CustomButtonStyle: SwiftUI.ButtonStyle {
   let model: ButtonVM

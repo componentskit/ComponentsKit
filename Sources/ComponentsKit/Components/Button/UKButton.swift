@@ -32,6 +32,15 @@ open class UKButton: UIView, UKComponent {
   /// A label that displays the title from the model.
   public var titleLabel = UILabel()
 
+  /// A loader view, created with the preferred loading VM from the model.
+  public let loaderView: UKLoading
+
+  /// A stack view that arranges the loader and title label.
+  private let stackView = UIStackView()
+
+  /// A image view for displaying the image from the model.
+  public let imageView: UIImageView = UIImageView()
+
   // MARK: UIView Properties
 
   open override var intrinsicContentSize: CGSize {
@@ -50,6 +59,7 @@ open class UKButton: UIView, UKComponent {
   ) {
     self.model = model
     self.action = action
+    self.loaderView = UKLoading(model: model.preferredLoadingVM)
     super.init(frame: .zero)
 
     self.setup()
@@ -64,7 +74,7 @@ open class UKButton: UIView, UKComponent {
   // MARK: Setup
 
   private func setup() {
-    self.addSubview(self.titleLabel)
+    self.addSubview(self.stackView)
 
     if #available(iOS 17.0, *) {
       self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
@@ -78,12 +88,23 @@ open class UKButton: UIView, UKComponent {
   private func style() {
     Self.Style.mainView(self, model: self.model)
     Self.Style.titleLabel(self.titleLabel, model: self.model)
+    Self.Style.configureStackView(
+      self.stackView,
+      model: self.model,
+      loaderView: self.loaderView,
+      titleLabel: self.titleLabel,
+      imageView: self.imageView
+    )
+
+    self.loaderView.model = self.model.preferredLoadingVM
+
+    self.loaderView.isHidden = !self.model.isLoading
   }
 
   // MARK: Layout
 
   private func layout() {
-    self.titleLabel.center()
+    self.stackView.center()
   }
 
   open override func layoutSubviews() {
@@ -99,7 +120,13 @@ open class UKButton: UIView, UKComponent {
 
     self.style()
 
-    if self.model.shouldUpdateSize(oldModel) {
+    self.imageView.image = self.model.uiImage
+    self.imageView.tintColor = self.model.foregroundColor.uiColor
+
+    if self.model.shouldUpdateSize(oldModel)
+        || self.model.isLoading != oldModel.isLoading
+        || self.model.imageSrc != oldModel.imageSrc
+        || self.model.imageLocation != oldModel.imageLocation {
       self.invalidateIntrinsicContentSize()
     }
   }
@@ -107,7 +134,7 @@ open class UKButton: UIView, UKComponent {
   // MARK: UIView methods
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    let contentSize = self.titleLabel.sizeThatFits(size)
+    let contentSize = self.stackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     let preferredSize = self.model.preferredSize(
       for: contentSize,
       parentWidth: self.superview?.bounds.width
@@ -182,6 +209,41 @@ extension UKButton {
       label.text = model.title
       label.font = model.preferredFont.uiFont
       label.textColor = model.foregroundColor.uiColor
+    }
+    static func configureStackView(
+      _ stackView: UIStackView,
+      model: Model,
+      loaderView: UKLoading,
+      titleLabel: UILabel,
+      imageView: UIImageView
+    ) {
+      stackView.axis = .horizontal
+      stackView.alignment = .center
+      stackView.spacing = model.contentSpacing
+
+      for subview in stackView.arrangedSubviews {
+        stackView.removeArrangedSubview(subview)
+        subview.removeFromSuperview()
+      }
+
+      if model.isLoading {
+        stackView.addArrangedSubview(loaderView)
+        stackView.addArrangedSubview(titleLabel)
+        return
+      }
+
+      if model.imageSrc != nil {
+        switch model.imageLocation {
+        case .leading:
+          stackView.addArrangedSubview(imageView)
+          stackView.addArrangedSubview(titleLabel)
+        case .trailing:
+          stackView.addArrangedSubview(titleLabel)
+          stackView.addArrangedSubview(imageView)
+        }
+      } else {
+        stackView.addArrangedSubview(titleLabel)
+      }
     }
   }
 }
