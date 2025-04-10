@@ -29,25 +29,77 @@ public struct SUButton: View {
   // MARK: Body
 
   public var body: some View {
-    Button(self.model.title, action: self.action)
-      .buttonStyle(CustomButtonStyle(model: self.model))
-      .simultaneousGesture(DragGesture(minimumDistance: 0.0)
-        .onChanged { _ in
-          self.isPressed = true
-        }
-        .onEnded { _ in
-          self.isPressed = false
-        }
-      )
-      .disabled(!self.model.isEnabled)
-      .scaleEffect(
-        self.isPressed ? self.model.animationScale.value : 1,
-        anchor: .center
-      )
+    Button(action: self.action) {
+      HStack(spacing: self.model.contentSpacing) {
+        self.content
+      }
+    }
+    .buttonStyle(CustomButtonStyle(model: self.model))
+    .simultaneousGesture(DragGesture(minimumDistance: 0.0)
+      .onChanged { _ in
+        self.isPressed = true
+      }
+      .onEnded { _ in
+        self.isPressed = false
+      }
+    )
+    .disabled(!self.model.isInteractive)
+    .scaleEffect(
+      self.isPressed ? self.model.animationScale.value : 1,
+      anchor: .center
+    )
+  }
+
+  @ViewBuilder
+  private var content: some View {
+    switch (self.model.isLoading, self.model.image, self.model.imageLocation) {
+    case (true, _, _) where self.model.title.isEmpty:
+      SULoading(model: self.model.preferredLoadingVM)
+    case (true, _, _):
+      SULoading(model: self.model.preferredLoadingVM)
+      Text(self.model.title)
+    case (false, let uiImage?, .leading) where self.model.title.isEmpty:
+      ButtonImageView(image: uiImage)
+        .frame(width: self.model.imageSide, height: self.model.imageSide)
+    case (false, let uiImage?, .leading):
+      ButtonImageView(image: uiImage)
+        .frame(width: self.model.imageSide, height: self.model.imageSide)
+      Text(self.model.title)
+    case (false, let uiImage?, .trailing) where self.model.title.isEmpty:
+      ButtonImageView(image: uiImage)
+        .frame(width: self.model.imageSide, height: self.model.imageSide)
+    case (false, let uiImage?, .trailing):
+      Text(self.model.title)
+      ButtonImageView(image: uiImage)
+        .frame(width: self.model.imageSide, height: self.model.imageSide)
+    case (false, _, _):
+      Text(self.model.title)
+    }
   }
 }
 
 // MARK: - Helpers
+
+private struct ButtonImageView: UIViewRepresentable {
+  class InternalImageView: UIImageView {
+    override var intrinsicContentSize: CGSize {
+      return .zero
+    }
+  }
+
+  let image: UIImage
+
+  func makeUIView(context: Context) -> UIImageView {
+    let imageView = InternalImageView()
+    imageView.image = self.image
+    imageView.contentMode = .scaleAspectFit
+    return imageView
+  }
+
+  func updateUIView(_ imageView: UIImageView, context: Context) {
+    imageView.image = self.image
+  }
+}
 
 private struct CustomButtonStyle: SwiftUI.ButtonStyle {
   let model: ButtonVM
