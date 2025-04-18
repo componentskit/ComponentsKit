@@ -45,27 +45,14 @@ public struct SUCheckbox: View {
             value: self.isSelected
           )
 
-        Path { path in
-          path.move(to: .init(
-            x: self.model.checkboxSide / 4,
-            y: 11 / 24 * self.model.checkboxSide
+        Path(self.model.checkmarkPath)
+          .trim(from: 0, to: self.checkmarkStroke)
+          .stroke(style: StrokeStyle(
+            lineWidth: self.model.checkmarkLineWidth,
+            lineCap: .round,
+            lineJoin: .round
           ))
-          path.addLine(to: .init(
-            x: 11 / 24 * self.model.checkboxSide,
-            y: 17 / 24 * self.model.checkboxSide
-          ))
-          path.addLine(to: .init(
-            x: 3 / 4 * self.model.checkboxSide,
-            y: 7 / 24 * self.model.checkboxSide
-          ))
-        }
-        .trim(from: 0, to: self.checkmarkStroke)
-        .stroke(style: StrokeStyle(
-          lineWidth: self.model.checkmarkLineWidth,
-          lineCap: .round,
-          lineJoin: .round
-        ))
-        .foregroundStyle(self.model.foregroundColor.color)
+          .foregroundStyle(self.model.foregroundColor.color)
       }
       .overlay {
         RoundedRectangle(cornerRadius: self.model.checkboxCornerRadius)

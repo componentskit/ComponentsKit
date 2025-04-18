@@ -96,22 +96,7 @@ open class UKCheckbox: UIView, UKComponent {
     self.checkmarkLayer.lineCap = .round
     self.checkmarkLayer.lineJoin = .round
     self.checkmarkLayer.strokeEnd = self.isSelected ? 1.0 : 0.0
-
-    let checkmarkPath = UIBezierPath()
-    checkmarkPath.move(to: .init(
-      x: self.model.checkboxSide / 4,
-      y: 11 / 24 * self.model.checkboxSide
-    ))
-    checkmarkPath.addLine(to: .init(
-      x: 11 / 24 * self.model.checkboxSide,
-      y: 17 / 24 * self.model.checkboxSide
-    ))
-    checkmarkPath.addLine(to: .init(
-      x: 3 / 4 * self.model.checkboxSide,
-      y: 7 / 24 * self.model.checkboxSide
-    ))
-
-    self.checkmarkLayer.path = checkmarkPath.cgPath
+    self.checkmarkLayer.path = self.model.checkmarkPath
   }
 
   // MARK: Style

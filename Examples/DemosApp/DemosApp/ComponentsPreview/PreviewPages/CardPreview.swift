@@ -15,13 +15,23 @@ struct CardPreview: View {
         SUCard(model: self.model, content: self.suCardContent)
       }
       Form {
+        AnimationScalePicker(selection: self.$model.animationScale)
         Picker("Background Color", selection: self.$model.backgroundColor) {
-          Text("Default").tag(Optional<UniversalColor>.none)
+          Text("Background").tag(UniversalColor.background)
           Text("Secondary Background").tag(UniversalColor.secondaryBackground)
           Text("Accent Background").tag(UniversalColor.accentBackground)
           Text("Success Background").tag(UniversalColor.successBackground)
           Text("Warning Background").tag(UniversalColor.warningBackground)
           Text("Danger Background").tag(UniversalColor.dangerBackground)
+        }
+        Picker("Border Color", selection: self.$model.borderColor) {
+          Text("Divider").tag(UniversalColor.divider)
+          Text("Primary").tag(UniversalColor.primary)
+          Text("Accent").tag(UniversalColor.accent)
+          Text("Success").tag(UniversalColor.success)
+          Text("Warning").tag(UniversalColor.warning)
+          Text("Danger").tag(UniversalColor.danger)
+          Text("Custom").tag(UniversalColor.universal(.uiColor(.systemPurple)))
         }
         BorderWidthPicker(selection: self.$model.borderWidth)
         Picker("Content Paddings", selection: self.$model.contentPaddings) {
@@ -39,6 +49,7 @@ struct CardPreview: View {
           Text("Large").tag(Shadow.large)
           Text("Custom").tag(Shadow.custom(20.0, .zero, UniversalColor.accentBackground))
         }
+        Toggle("Tappable", isOn: self.$model.isTappable)
       }
     }
   }

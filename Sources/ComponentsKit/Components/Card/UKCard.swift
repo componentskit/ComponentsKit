@@ -21,9 +21,22 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
   /// The primary content of the card, provided as a custom view.
   public let content: Content
 
-  // MARK: - Properties
+  // MARK: - Public Properties
 
-  private var contentConstraints = LayoutConstraints()
+  /// A closure that is triggered when the card is tapped.
+  public var onTap: () -> Void
+
+  /// A Boolean value indicating whether the button is pressed.
+  public private(set) var isPressed: Bool = false {
+    didSet {
+      self.transform = self.isPressed
+      ? .init(
+        scaleX: self.model.animationScale.value,
+        y: self.model.animationScale.value
+      )
+      : .identity
+    }
+  }
 
   /// A model that defines the appearance properties.
   public var model: CardVM {
@@ -31,6 +44,10 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
       self.update(oldValue)
     }
   }
+
+  // MARK: - Private Properties
+
+  private var contentConstraints = LayoutConstraints()
 
   // MARK: - Initialization
 
@@ -41,10 +58,12 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
   ///   - content: The content that is displayed in the card.
   public init(
     model: CardVM = .init(),
-    content: @escaping () -> Content
+    content: @escaping () -> Content,
+    onTap: @escaping () -> Void = {}
   ) {
     self.model = model
     self.content = content()
+    self.onTap = onTap
 
     super.init(frame: .zero)
 
@@ -95,6 +114,8 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
     self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
   }
 
+  // MARK: - Update
+
   /// Updates appearance when the model changes.
   open func update(_ oldValue: CardVM) {
     guard self.model != oldValue else { return }
@@ -113,6 +134,43 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
 
   // MARK: - UIView Methods
 
+  open override func touchesBegan(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
+    super.touchesBegan(touches, with: event)
+
+    guard self.model.isTappable else { return }
+
+    self.isPressed = true
+  }
+
+  open override func touchesEnded(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
+    super.touchesEnded(touches, with: event)
+
+    guard self.model.isTappable else { return }
+
+    defer { self.isPressed = false }
+
+    if self.model.isTappable,
+       let location = touches.first?.location(in: self),
+       self.bounds.contains(location) {
+      self.onTap()
+    }
+  }
+
+  open override func touchesCancelled(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
+    super.touchesCancelled(touches, with: event)
+
+    self.isPressed = false
+  }
+
   open override func traitCollectionDidChange(
     _ previousTraitCollection: UITraitCollection?
   ) {
@@ -130,10 +188,10 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
 extension UKCard {
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: Model) {
-      view.backgroundColor = model.preferredBackgroundColor.uiColor
+      view.backgroundColor = model.backgroundColor.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
       view.layer.borderWidth = model.borderWidth.value
-      view.layer.borderColor = UniversalColor.divider.cgColor
+      view.layer.borderColor = model.borderColor.cgColor
       view.shadow(model.shadow)
     }
   }
