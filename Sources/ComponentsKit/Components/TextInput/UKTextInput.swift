@@ -205,8 +205,11 @@ extension UKTextInput {
     }
 
     static func textView(_ textView: UITextView, padding: CGFloat) {
-      textView.textContainerInset = .init(inset: padding)
       textView.textContainer.lineFragmentPadding = 0
+      textView.textContainerInset.top = padding
+      textView.textContainerInset.left = padding
+      textView.textContainerInset.right = padding
+      textView.textContainerInset.bottom = padding
     }
 
     static func placeholder(

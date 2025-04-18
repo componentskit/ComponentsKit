@@ -14,7 +14,7 @@ public struct SUInputField<FocusValue: Hashable>: View {
   ///
   /// When the `localFocus` value matches `globalFocus`, this input field becomes focused.
   /// This enables centralized focus management for multiple text inputs and input fields within a single view.
-  @FocusState.Binding public var globalFocus: FocusValue
+  public let globalFocus: FocusState<FocusValue>.Binding?
 
   /// The unique value for this field to match against the global focus state to determine whether this input field is focused.
   ///
@@ -24,7 +24,7 @@ public struct SUInputField<FocusValue: Hashable>: View {
   ///
   /// - Warning: The `localFocus` value must be unique to each text input and input field, to ensure that different
   /// text inputs and input fields within the same view can be independently focused based on the shared `globalFocus`.
-  public var localFocus: FocusValue
+  public let localFocus: FocusValue
 
   // MARK: Initialization
 
@@ -41,7 +41,7 @@ public struct SUInputField<FocusValue: Hashable>: View {
     model: InputFieldVM = .init()
   ) {
     self._text = text
-    self._globalFocus = globalFocus
+    self.globalFocus = globalFocus
     self.localFocus = localFocus
     self.model = model
   }
@@ -71,7 +71,7 @@ public struct SUInputField<FocusValue: Hashable>: View {
       .tint(self.model.tintColor.color)
       .font(self.model.preferredFont.font)
       .foregroundStyle(self.model.foregroundColor.color)
-      .focused(self.$globalFocus, equals: self.localFocus)
+      .applyFocus(globalFocus: self.globalFocus, localFocus: self.localFocus)
       .disabled(!self.model.isEnabled)
       .keyboardType(self.model.keyboardType)
       .submitLabel(self.model.submitType.submitLabel)
@@ -82,13 +82,29 @@ public struct SUInputField<FocusValue: Hashable>: View {
     .frame(height: self.model.height)
     .background(self.model.backgroundColor.color)
     .onTapGesture {
-      self.globalFocus = self.localFocus
+      self.globalFocus?.wrappedValue = self.localFocus
     }
     .clipShape(
       RoundedRectangle(
         cornerRadius: self.model.cornerRadius.value()
       )
     )
+  }
+}
+
+// MARK: Helpers
+
+extension View {
+  @ViewBuilder
+  fileprivate func applyFocus<FocusValue: Hashable>(
+    globalFocus: FocusState<FocusValue>.Binding?,
+    localFocus: FocusValue,
+  ) -> some View {
+    if let globalFocus {
+      self.focused(globalFocus, equals: localFocus)
+    } else {
+      self
+    }
   }
 }
 
@@ -106,7 +122,25 @@ extension SUInputField where FocusValue == Bool {
     model: InputFieldVM = .init()
   ) {
     self._text = text
-    self._globalFocus = isFocused
+    self.globalFocus = isFocused
+    self.localFocus = true
+    self.model = model
+  }
+}
+
+// MARK: - No Focus Value
+
+extension SUInputField where FocusValue == Bool {
+  /// Initializer.
+  /// - Parameters:
+  ///   - text: A Binding value to control the inputted text.
+  ///   - model: A model that defines the appearance properties.
+  public init(
+    text: Binding<String>,
+    model: InputFieldVM = .init()
+  ) {
+    self._text = text
+    self.globalFocus = nil
     self.localFocus = true
     self.model = model
   }
