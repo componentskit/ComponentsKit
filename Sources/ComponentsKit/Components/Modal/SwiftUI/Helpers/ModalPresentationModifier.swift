@@ -38,7 +38,10 @@ struct ModalPresentationModifier<Modal: View>: ViewModifier {
         }
       }
       .fullScreenCover(
-        isPresented: self.$isPresented,
+        isPresented: .init(
+          get: { self.isPresented },
+          set: { self.isContentVisible = $0 }
+        ),
         onDismiss: self.onDismiss,
         content: {
           self.content()

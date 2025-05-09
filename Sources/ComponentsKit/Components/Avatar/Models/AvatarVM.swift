@@ -95,7 +95,7 @@ extension AvatarVM {
       self.placeholderBackgroundColor.setFill()
       UIBezierPath(rect: CGRect(origin: .zero, size: size)).fill()
 
-      icon?.withTintColor(self.placeholderForegroundColor, renderingMode: .alwaysOriginal).draw(in: CGRect(
+      icon?.withTintColor(self.placeholderForegroundColor).draw(in: CGRect(
         x: (size.width - iconSize.width) / 2,
         y: (size.height - iconSize.height) / 2,
         width: iconSize.width,

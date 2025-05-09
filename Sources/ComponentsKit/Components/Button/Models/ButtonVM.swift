@@ -164,10 +164,18 @@ extension ButtonVM {
     case .minimal:
       return 0
     case .light, .filled, .bordered, .plain:
-      return switch self.size {
-      case .small: 16
-      case .medium: 20
-      case .large: 24
+      if self.title.isNotEmpty || self.isLoading {
+        return switch self.size {
+        case .small: 16
+        case .medium: 20
+        case .large: 24
+        }
+      } else {
+        return switch self.size {
+        case .small: 8
+        case .medium: 10
+        case .large: 12
+        }
       }
     }
   }

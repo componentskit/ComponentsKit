@@ -59,19 +59,31 @@ public struct SUButton: View {
       SULoading(model: self.model.preferredLoadingVM)
       Text(self.model.title)
     case (false, let uiImage?, .leading) where self.model.title.isEmpty:
-      ButtonImageView(image: uiImage)
-        .frame(width: self.model.imageSide, height: self.model.imageSide)
+      ButtonImageView(
+        image: uiImage,
+        tintColor: self.model.foregroundColor.uiColor
+      )
+      .frame(width: self.model.imageSide, height: self.model.imageSide)
     case (false, let uiImage?, .leading):
-      ButtonImageView(image: uiImage)
-        .frame(width: self.model.imageSide, height: self.model.imageSide)
+      ButtonImageView(
+        image: uiImage,
+        tintColor: self.model.foregroundColor.uiColor
+      )
+      .frame(width: self.model.imageSide, height: self.model.imageSide)
       Text(self.model.title)
     case (false, let uiImage?, .trailing) where self.model.title.isEmpty:
-      ButtonImageView(image: uiImage)
-        .frame(width: self.model.imageSide, height: self.model.imageSide)
+      ButtonImageView(
+        image: uiImage,
+        tintColor: self.model.foregroundColor.uiColor
+      )
+      .frame(width: self.model.imageSide, height: self.model.imageSide)
     case (false, let uiImage?, .trailing):
       Text(self.model.title)
-      ButtonImageView(image: uiImage)
-        .frame(width: self.model.imageSide, height: self.model.imageSide)
+      ButtonImageView(
+        image: uiImage,
+        tintColor: self.model.foregroundColor.uiColor
+      )
+      .frame(width: self.model.imageSide, height: self.model.imageSide)
     case (false, _, _):
       Text(self.model.title)
     }
@@ -88,16 +100,20 @@ private struct ButtonImageView: UIViewRepresentable {
   }
 
   let image: UIImage
+  let tintColor: UIColor
 
   func makeUIView(context: Context) -> UIImageView {
     let imageView = InternalImageView()
     imageView.image = self.image
+    imageView.tintColor = self.tintColor
     imageView.contentMode = .scaleAspectFit
+    imageView.isUserInteractionEnabled = true
     return imageView
   }
 
   func updateUIView(_ imageView: UIImageView, context: Context) {
     imageView.image = self.image
+    imageView.tintColor = self.tintColor
   }
 }
 
@@ -108,10 +124,10 @@ private struct CustomButtonStyle: SwiftUI.ButtonStyle {
     configuration.label
       .font(self.model.preferredFont.font)
       .lineLimit(1)
-      .contentShape(.rect)
       .padding(.horizontal, self.model.horizontalPadding)
       .frame(maxWidth: self.model.width)
       .frame(height: self.model.height)
+      .contentShape(.rect)
       .foregroundStyle(self.model.foregroundColor.color)
       .background(self.model.backgroundColor?.color ?? .clear)
       .clipShape(
