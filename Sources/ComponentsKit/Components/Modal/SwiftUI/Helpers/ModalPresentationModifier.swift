@@ -23,6 +23,9 @@ struct ModalPresentationModifier<Modal: View>: ViewModifier {
 
   func body(content: Content) -> some View {
     content
+      .transaction {
+        $0.disablesAnimations = false
+      }
       .onAppear {
         if self.isContentVisible {
           self.isPresented = true
