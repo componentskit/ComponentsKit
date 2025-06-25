@@ -56,7 +56,7 @@ public struct SUCheckbox: View {
       }
       .overlay {
         RoundedRectangle(cornerRadius: self.model.checkboxCornerRadius)
-          .stroke(
+          .strokeBorder(
             self.model.borderColor.color,
             lineWidth: self.model.borderWidth
           )
