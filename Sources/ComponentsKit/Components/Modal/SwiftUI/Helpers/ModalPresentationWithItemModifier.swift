@@ -23,6 +23,9 @@ struct ModalPresentationWithItemModifier<Modal: View, Item: Identifiable>: ViewM
 
   func body(content: Content) -> some View {
     content
+      .transaction {
+        $0.disablesAnimations = false
+      }
       .onAppear {
         self.presentedItem = self.visibleItem
       }

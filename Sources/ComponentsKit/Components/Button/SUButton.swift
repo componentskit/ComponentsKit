@@ -139,7 +139,7 @@ private struct CustomButtonStyle: SwiftUI.ButtonStyle {
         RoundedRectangle(
           cornerRadius: self.model.cornerRadius.value()
         )
-        .stroke(
+        .strokeBorder(
           self.model.borderColor?.color ?? .clear,
           lineWidth: self.model.borderWidth
         )

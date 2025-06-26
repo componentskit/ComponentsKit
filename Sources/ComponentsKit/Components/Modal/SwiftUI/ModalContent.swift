@@ -59,7 +59,7 @@ struct ModalContent<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
     .clipShape(RoundedRectangle(cornerRadius: self.model.cornerRadius.value))
     .overlay(
       RoundedRectangle(cornerRadius: self.model.cornerRadius.value)
-        .stroke(UniversalColor.divider.color, lineWidth: self.model.borderWidth.value)
+        .strokeBorder(UniversalColor.divider.color, lineWidth: self.model.borderWidth.value)
     )
     .padding(self.model.outerPaddings.edgeInsets)
   }

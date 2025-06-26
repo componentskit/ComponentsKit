@@ -137,7 +137,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
       RoundedRectangle(
         cornerRadius: self.model.cornerRadius.value()
       )
-      .stroke(
+      .strokeBorder(
         self.model.borderColor.color,
         lineWidth: self.model.borderWidth
       )
