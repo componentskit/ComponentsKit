@@ -19,8 +19,8 @@ public struct SUCard<Content: View>: View {
   /// A closure that is triggered when the card is tapped.
   public var onTap: () -> Void
 
-  /// A Boolean value indicating whether the card is pressed.
-  @State public var isPressed: Bool = false
+  /// A current scale effect value.
+  @State public var scale: CGFloat = 1.0
 
   @ViewBuilder private let content: () -> Content
   @State private var contentSize: CGSize = .zero
@@ -66,16 +66,14 @@ public struct SUCard<Content: View>: View {
       .simultaneousGesture(
         DragGesture(minimumDistance: 0.0)
           .onChanged { _ in
-            self.isPressed = true
+            self.scale = self.model.animationScale.value
           }
           .onEnded { _ in
-            self.isPressed = false
+            self.scale = 1.0
           },
         isEnabled: self.model.isTappable
       )
-      .scaleEffect(
-        self.isPressed ? self.model.animationScale.value : 1,
-        anchor: .center
-      )
+      .scaleEffect(self.scale, anchor: .center)
+      .animation(.easeOut(duration: 0.05), value: self.scale)
   }
 }
