@@ -29,12 +29,14 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
   /// A Boolean value indicating whether the button is pressed.
   public private(set) var isPressed: Bool = false {
     didSet {
-      self.transform = self.isPressed
-      ? .init(
-        scaleX: self.model.animationScale.value,
-        y: self.model.animationScale.value
-      )
-      : .identity
+      UIView.animate(withDuration: 0.05, delay: 0, options: [.curveEaseOut]) {
+        self.transform = self.isPressed
+        ? .init(
+          scaleX: self.model.animationScale.value,
+          y: self.model.animationScale.value
+        )
+        : .identity
+      }
     }
   }
 
