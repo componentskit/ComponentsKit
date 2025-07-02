@@ -18,12 +18,14 @@ open class UKButton: FullWidthComponent, UKComponent {
   /// A Boolean value indicating whether the button is pressed.
   public private(set) var isPressed: Bool = false {
     didSet {
-      self.transform = self.isPressed && self.model.isInteractive
-      ? .init(
-        scaleX: self.model.animationScale.value,
-        y: self.model.animationScale.value
-      )
-      : .identity
+      UIView.animate(withDuration: 0.05, delay: 0, options: [.curveEaseOut]) {
+        self.transform = self.isPressed && self.model.isInteractive
+        ? .init(
+          scaleX: self.model.animationScale.value,
+          y: self.model.animationScale.value
+        )
+        : .identity
+      }
     }
   }
 
