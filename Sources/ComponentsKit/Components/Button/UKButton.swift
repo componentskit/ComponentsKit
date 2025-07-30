@@ -199,7 +199,13 @@ open class UKButton: FullWidthComponent, UKComponent {
   ) {
     super.touchesCancelled(touches, with: event)
 
-    self.isPressed = false
+    defer { self.isPressed = false }
+
+    if self.model.isInteractive,
+       let location = touches.first?.location(in: self),
+       self.bounds.contains(location) {
+      self.action()
+    }
   }
 
   open override func traitCollectionDidChange(

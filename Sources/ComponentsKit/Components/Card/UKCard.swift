@@ -170,7 +170,15 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
   ) {
     super.touchesCancelled(touches, with: event)
 
-    self.isPressed = false
+    guard self.model.isTappable else { return }
+
+    defer { self.isPressed = false }
+
+    if self.model.isTappable,
+       let location = touches.first?.location(in: self),
+       self.bounds.contains(location) {
+      self.onTap()
+    }
   }
 
   open override func traitCollectionDidChange(
