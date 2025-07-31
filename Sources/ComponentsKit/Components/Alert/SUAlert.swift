@@ -60,6 +60,7 @@ struct AlertContent: View {
       .foregroundStyle(UniversalColor.foreground.color)
       .multilineTextAlignment(.center)
       .frame(maxWidth: .infinity)
+      .fixedSize(horizontal: false, vertical: true)
   }
 
   func message(_ text: String) -> some View {

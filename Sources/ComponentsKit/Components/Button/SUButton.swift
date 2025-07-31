@@ -9,8 +9,8 @@ public struct SUButton: View {
   /// A closure that is triggered when the button is tapped.
   public var action: () -> Void
 
-  /// A Boolean value indicating whether the button is pressed.
-  @State public var isPressed: Bool = false
+  /// A current scale effect value.
+  @State public var scale: CGFloat = 1.0
 
   // MARK: Initialization
 
@@ -37,17 +37,15 @@ public struct SUButton: View {
     .buttonStyle(CustomButtonStyle(model: self.model))
     .simultaneousGesture(DragGesture(minimumDistance: 0.0)
       .onChanged { _ in
-        self.isPressed = true
+        self.scale = self.model.animationScale.value
       }
       .onEnded { _ in
-        self.isPressed = false
+        self.scale = 1.0
       }
     )
     .disabled(!self.model.isInteractive)
-    .scaleEffect(
-      self.isPressed ? self.model.animationScale.value : 1,
-      anchor: .center
-    )
+    .scaleEffect(self.scale, anchor: .center)
+    .animation(.easeOut(duration: 0.05), value: self.scale)
   }
 
   @ViewBuilder

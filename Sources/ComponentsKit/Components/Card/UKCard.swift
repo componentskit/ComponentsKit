@@ -29,12 +29,14 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
   /// A Boolean value indicating whether the button is pressed.
   public private(set) var isPressed: Bool = false {
     didSet {
-      self.transform = self.isPressed
-      ? .init(
-        scaleX: self.model.animationScale.value,
-        y: self.model.animationScale.value
-      )
-      : .identity
+      UIView.animate(withDuration: 0.05, delay: 0, options: [.curveEaseOut]) {
+        self.transform = self.isPressed
+        ? .init(
+          scaleX: self.model.animationScale.value,
+          y: self.model.animationScale.value
+        )
+        : .identity
+      }
     }
   }
 
@@ -168,7 +170,15 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
   ) {
     super.touchesCancelled(touches, with: event)
 
-    self.isPressed = false
+    guard self.model.isTappable else { return }
+
+    defer { self.isPressed = false }
+
+    if self.model.isTappable,
+       let location = touches.first?.location(in: self),
+       self.bounds.contains(location) {
+      self.onTap()
+    }
   }
 
   open override func traitCollectionDidChange(
