@@ -122,6 +122,6 @@ extension UIViewController {
     animated: Bool,
     completion: (() -> Void)? = nil
   ) {
-    self.present(vc as UIViewController, animated: false)
+    self.present(vc as UIViewController, animated: false, completion: completion)
   }
 }
