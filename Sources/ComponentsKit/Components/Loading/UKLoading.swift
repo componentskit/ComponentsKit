@@ -82,7 +82,7 @@ open class UKLoading: UIView, UKComponent {
     self.shapeLayer.lineWidth = self.model.loadingLineWidth
     self.shapeLayer.strokeColor = self.model.color.main.uiColor.cgColor
     self.shapeLayer.fillColor = UIColor.clear.cgColor
-    self.shapeLayer.lineCap = .round
+    self.shapeLayer.lineCap = self.model.lineCap.shapeLayerLineCap
     self.shapeLayer.strokeEnd = 0.75
   }
 
@@ -97,6 +97,7 @@ open class UKLoading: UIView, UKComponent {
 
     self.shapeLayer.lineWidth = self.model.loadingLineWidth
     self.shapeLayer.strokeColor = self.model.color.main.uiColor.cgColor
+    self.shapeLayer.lineCap = self.model.lineCap.shapeLayerLineCap
 
     if self.model.shouldUpdateShapePath(oldModel) {
       self.updateShapePath()

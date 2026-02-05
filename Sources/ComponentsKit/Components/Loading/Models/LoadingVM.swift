@@ -7,6 +7,9 @@ public struct LoadingVM: ComponentVM {
   /// Defaults to `.accent`.
   public var color: ComponentColor = .accent
 
+  /// The style of line endings.
+  public var lineCap: LineCap = .rounded
+
   /// The width of the lines used in the loading indicator.
   ///
   /// If not provided, the line width is automatically adjusted based on the size.

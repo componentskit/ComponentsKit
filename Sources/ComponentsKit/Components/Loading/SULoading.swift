@@ -40,7 +40,7 @@ public struct SULoading: View {
         self.model.color.main.color,
         style: StrokeStyle(
           lineWidth: self.model.loadingLineWidth,
-          lineCap: .round,
+          lineCap: self.model.lineCap.cgLineCap,
           lineJoin: .round,
           miterLimit: 0
         )

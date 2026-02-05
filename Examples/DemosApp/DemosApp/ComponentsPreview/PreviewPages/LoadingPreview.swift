@@ -16,6 +16,7 @@ struct LoadingPreview: View {
       }
       Form {
         ComponentColorPicker(selection: self.$model.color)
+        LineCapPicker(selection: self.$model.lineCap)
         Picker("Line Width", selection: self.$model.lineWidth) {
           Text("Default").tag(Optional<CGFloat>.none)
           Text("Custom: 6px").tag(CGFloat(6.0))

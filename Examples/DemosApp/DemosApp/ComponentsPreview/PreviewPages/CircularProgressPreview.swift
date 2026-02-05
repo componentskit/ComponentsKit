@@ -29,10 +29,7 @@ struct CircularProgressPreview: View {
       Form {
         ComponentColorPicker(selection: self.$model.color)
         CaptionFontPicker(selection: self.$model.font)
-        Picker("Line Cap", selection: self.$model.lineCap) {
-          Text("Rounded").tag(CircularProgressVM.LineCap.rounded)
-          Text("Square").tag(CircularProgressVM.LineCap.square)
-        }
+        LineCapPicker(selection: self.$model.lineCap)
         Picker("Line Width", selection: self.$model.lineWidth) {
           Text("Default").tag(Optional<CGFloat>.none)
           Text("2").tag(Optional<CGFloat>.some(2))

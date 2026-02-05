@@ -254,6 +254,19 @@ struct KeyboardTypePicker: View {
   }
 }
 
+// MARK: - LineCap
+
+struct LineCapPicker: View {
+  @Binding var selection: LineCap
+  
+  var body: some View {
+    Picker("Line Cap", selection: self.$selection) {
+      Text("Rounded").tag(LineCap.rounded)
+      Text("Square").tag(LineCap.square)
+    }
+  }
+}
+
 // MARK: - OverlayStylePicker
 
 struct OverlayStylePicker: View {
