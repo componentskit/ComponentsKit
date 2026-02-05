@@ -20,7 +20,7 @@ struct LoadingPreview: View {
           Text("Default").tag(Optional<CGFloat>.none)
           Text("Custom: 6px").tag(CGFloat(6.0))
         }
-        SizePicker(selection: self.$model.size)
+        OptionalSizePicker(selection: self.$model.size)
       }
     }
   }

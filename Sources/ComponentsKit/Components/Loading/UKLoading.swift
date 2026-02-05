@@ -66,12 +66,6 @@ open class UKLoading: UIView, UKComponent {
 
     NotificationCenter.default.addObserver(
       self,
-      selector: #selector(self.handleAppWillMoveToBackground),
-      name: UIApplication.willResignActiveNotification,
-      object: nil
-    )
-    NotificationCenter.default.addObserver(
-      self,
       selector: #selector(self.handleAppMovedFromBackground),
       name: UIApplication.didBecomeActiveNotification,
       object: nil
@@ -92,9 +86,6 @@ open class UKLoading: UIView, UKComponent {
     self.shapeLayer.strokeEnd = 0.75
   }
 
-  @objc private func handleAppWillMoveToBackground() {
-    self.shapeLayer.removeAllAnimations()
-  }
   @objc private func handleAppMovedFromBackground() {
     self.addSpinnerAnimation()
   }
@@ -116,8 +107,8 @@ open class UKLoading: UIView, UKComponent {
   }
 
   private func updateShapePath() {
-    let radius = self.model.preferredSize.height / 2 - self.shapeLayer.lineWidth / 2
     let center = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
+    let radius = min(self.bounds.height, self.bounds.width) / 2 - self.model.loadingLineWidth
     self.shapeLayer.path = UIBezierPath(
       arcCenter: center,
       radius: radius,
@@ -132,9 +123,11 @@ open class UKLoading: UIView, UKComponent {
   open override func layoutSubviews() {
     super.layoutSubviews()
 
-    // Adjust the layer's frame to fit within the view's bounds
+    CATransaction.begin()
+    CATransaction.setDisableActions(true)
     self.shapeLayer.frame = self.bounds
     self.updateShapePath()
+    CATransaction.commit()
 
     if self.isVisible {
       self.addSpinnerAnimation()
@@ -144,7 +137,7 @@ open class UKLoading: UIView, UKComponent {
   // MARK: UIView methods
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    let preferredSize = self.model.preferredSize
+    let preferredSize = self.model.preferredSize ?? size
     return .init(
       width: min(preferredSize.width, size.width),
       height: min(preferredSize.height, size.height)
@@ -161,13 +154,19 @@ open class UKLoading: UIView, UKComponent {
   // MARK: Helpers
 
   private func addSpinnerAnimation() {
+    let animationKey = "rotationAnimation"
+
+    guard self.shapeLayer.animation(forKey: animationKey).isNil else {
+      return
+    }
+
     let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
     rotationAnimation.fromValue = 0
     rotationAnimation.toValue = CGFloat.pi * 2
     rotationAnimation.duration = 1.0
     rotationAnimation.repeatCount = .infinity
     rotationAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
-    self.shapeLayer.add(rotationAnimation, forKey: "rotationAnimation")
+    self.shapeLayer.add(rotationAnimation, forKey: animationKey)
   }
 
   private func handleTraitChanges() {

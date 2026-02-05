@@ -282,6 +282,19 @@ struct SizePicker: View {
   }
 }
 
+struct OptionalSizePicker: View {
+  @Binding var selection: ComponentSize?
+
+  var body: some View {
+    Picker("Size", selection: self.$selection) {
+      Text("Nil").tag(Optional<ComponentSize>.none)
+      Text("Small").tag(ComponentSize.small)
+      Text("Medium").tag(ComponentSize.medium)
+      Text("Large").tag(ComponentSize.large)
+    }
+  }
+}
+
 // MARK: - SubmitTypePicker
 
 struct SubmitTypePicker: View {

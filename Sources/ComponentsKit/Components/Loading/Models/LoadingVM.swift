@@ -14,8 +14,13 @@ public struct LoadingVM: ComponentVM {
 
   /// The predefined size of the loading indicator.
   ///
+  /// If nil, the loader is intended to expand to the available space provided by
+  /// the surrounding layout:
+  /// - In SwiftUI, constrain it with .frame(...).
+  /// - In UIKit, constrain it with Auto Layout.
+  ///
   /// Defaults to `.medium`.
-  public var size: ComponentSize = .medium
+  public var size: ComponentSize? = .medium
 
   /// Initializes a new instance of `LoadingVM` with default values.
   public init() {}
@@ -25,10 +30,20 @@ public struct LoadingVM: ComponentVM {
 
 extension LoadingVM {
   var loadingLineWidth: CGFloat {
-    return self.lineWidth ?? max(self.preferredSize.width / 8, 2)
+    if let lineWidth {
+      return lineWidth
+    } else if let width = self.preferredSize?.width {
+      return max(width / 8, 2)
+    } else {
+      return 3
+    }
   }
-  var preferredSize: CGSize {
-    switch self.size {
+  var preferredSize: CGSize? {
+    guard let size else {
+      return nil
+    }
+
+    switch size {
     case .small:
       return .init(width: 24, height: 24)
     case .medium:
@@ -37,9 +52,6 @@ extension LoadingVM {
       return .init(width: 48, height: 48)
     }
   }
-  var radius: CGFloat {
-    return self.preferredSize.height / 2 - self.loadingLineWidth / 2
-  }
 }
 
 // MARK: UIKit Helpers
@@ -47,16 +59,5 @@ extension LoadingVM {
 extension LoadingVM {
   func shouldUpdateShapePath(_ oldModel: Self) -> Bool {
     return self.size != oldModel.size || self.lineWidth != oldModel.lineWidth
-  }
-}
-
-// MARK: SwiftUI Helpers
-
-extension LoadingVM {
-  var center: CGPoint {
-    return .init(
-      x: self.preferredSize.width / 2,
-      y: self.preferredSize.height / 2
-    )
   }
 }

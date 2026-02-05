@@ -22,15 +22,19 @@ public struct SULoading: View {
   // MARK: Body
 
   public var body: some View {
-    Path { path in
-      path.addArc(
-        center: self.model.center,
-        radius: self.model.radius,
-        startAngle: .radians(0),
-        endAngle: .radians(2 * .pi),
-        clockwise: true
-      )
-    }
+    GeometryReader { geometry in
+      Path { path in
+        path.addArc(
+          center: .init(
+            x: geometry.size.width / 2,
+            y: geometry.size.height / 2
+          ),
+          radius: min(geometry.size.width, geometry.size.height) / 2 - self.model.loadingLineWidth,
+          startAngle: .radians(0),
+          endAngle: .radians(2 * .pi),
+          clockwise: true
+        )
+      }
       .trim(from: 0, to: 0.75)
       .stroke(
         self.model.color.main.color,
@@ -47,15 +51,16 @@ public struct SULoading: View {
         .repeatForever(autoreverses: false),
         value: self.rotationAngle
       )
-      .frame(
-        width: self.model.preferredSize.width,
-        height: self.model.preferredSize.height,
-        alignment: .center
-      )
       .onAppear {
         DispatchQueue.main.async {
           self.rotationAngle = 2 * .pi
         }
       }
+    }
+    .frame(
+      width: self.model.preferredSize?.width,
+      height: self.model.preferredSize?.height,
+      alignment: .center
+    )
   }
 }
