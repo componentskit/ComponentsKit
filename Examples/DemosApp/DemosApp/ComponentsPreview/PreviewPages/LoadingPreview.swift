@@ -21,9 +21,6 @@ struct LoadingPreview: View {
           Text("Custom: 6px").tag(CGFloat(6.0))
         }
         SizePicker(selection: self.$model.size)
-        Picker("Style", selection: self.$model.style) {
-          Text("Spinner").tag(LoadingVM.Style.spinner)
-        }
       }
     }
   }

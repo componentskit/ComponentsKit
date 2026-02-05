@@ -17,11 +17,6 @@ public struct LoadingVM: ComponentVM {
   /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
 
-  /// The style of the loading indicator (e.g., spinner, bar).
-  ///
-  /// Defaults to `.spinner`.
-  public var style: Style = .spinner
-
   /// Initializes a new instance of `LoadingVM` with default values.
   public init() {}
 }
@@ -33,16 +28,13 @@ extension LoadingVM {
     return self.lineWidth ?? max(self.preferredSize.width / 8, 2)
   }
   var preferredSize: CGSize {
-    switch self.style {
-    case .spinner:
-      switch self.size {
-      case .small:
-        return .init(width: 24, height: 24)
-      case .medium:
-        return .init(width: 36, height: 36)
-      case .large:
-        return .init(width: 48, height: 48)
-      }
+    switch self.size {
+    case .small:
+      return .init(width: 24, height: 24)
+    case .medium:
+      return .init(width: 36, height: 36)
+    case .large:
+      return .init(width: 48, height: 48)
     }
   }
   var radius: CGFloat {
