@@ -40,7 +40,7 @@ struct CircularProgressPreview: View {
           Text("Circle").tag(CircularProgressVM.Shape.circle)
           Text("Arc").tag(CircularProgressVM.Shape.arc)
         }
-        SizePicker(selection: self.$model.size)
+        OptionalSizePicker(selection: self.$model.size)
       }
       .onReceive(self.timer) { _ in
         if self.model.currentValue < self.model.maxValue {
