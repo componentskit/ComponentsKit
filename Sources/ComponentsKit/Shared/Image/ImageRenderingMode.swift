@@ -26,16 +26,6 @@ extension ImageRenderingMode {
   }
 }
 
-extension UIImage {
-  func withRenderingMode(_ mode: ImageRenderingMode?) -> UIImage {
-    if let mode {
-      return self.withRenderingMode(mode.uiImageRenderingMode)
-    } else {
-      return self
-    }
-  }
-}
-
 // MARK: - SwiftUI Helpers
 
 extension ImageRenderingMode {
