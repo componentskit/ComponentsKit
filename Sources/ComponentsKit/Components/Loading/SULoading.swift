@@ -25,11 +25,8 @@ public struct SULoading: View {
     GeometryReader { geometry in
       Path { path in
         path.addArc(
-          center: .init(
-            x: geometry.size.width / 2,
-            y: geometry.size.height / 2
-          ),
-          radius: min(geometry.size.width, geometry.size.height) / 2 - self.model.loadingLineWidth,
+          center: self.model.center(size: geometry.size),
+          radius: self.model.radius(size: geometry.size),
           startAngle: .radians(0),
           endAngle: .radians(2 * .pi),
           clockwise: true

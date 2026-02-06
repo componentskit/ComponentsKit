@@ -55,6 +55,12 @@ extension LoadingVM {
       return .init(width: 48, height: 48)
     }
   }
+  func radius(size: CGSize) -> CGFloat {
+    return min(size.width, size.height) / 2 - self.loadingLineWidth / 2
+  }
+  func center(size: CGSize) -> CGPoint {
+    return .init(x: size.width / 2, y: size.height / 2)
+  }
 }
 
 // MARK: UIKit Helpers

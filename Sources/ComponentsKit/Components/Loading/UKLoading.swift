@@ -108,11 +108,9 @@ open class UKLoading: UIView, UKComponent {
   }
 
   private func updateShapePath() {
-    let center = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
-    let radius = min(self.bounds.height, self.bounds.width) / 2 - self.model.loadingLineWidth
     self.shapeLayer.path = UIBezierPath(
-      arcCenter: center,
-      radius: radius,
+      arcCenter: self.model.center(size: self.bounds.size),
+      radius: self.model.radius(size: self.bounds.size),
       startAngle: 0,
       endAngle: 2 * .pi,
       clockwise: true
