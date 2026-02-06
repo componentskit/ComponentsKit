@@ -20,7 +20,7 @@ struct AvatarGroupPreview: View {
         $0.placeholder = .text("IM")
       },
       .init {
-        $0.placeholder = .sfSymbol("person.circle")
+        $0.placeholder = .image(.init(systemName: "person.circle"))
       },
     ]
   }

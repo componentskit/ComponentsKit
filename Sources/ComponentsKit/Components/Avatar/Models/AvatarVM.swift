@@ -14,7 +14,7 @@ public struct AvatarVM: ComponentVM, Hashable {
   public var imageSrc: ImageSource?
 
   /// The placeholder that is displayed if the image is not provided or fails to load.
-  public var placeholder: Placeholder = .icon("avatar_placeholder", Bundle.module)
+  public var placeholder: Placeholder = .image(.init("avatar_placeholder", bundle: .module))
 
   /// The predefined size of the avatar.
   ///
@@ -54,12 +54,8 @@ extension AvatarVM {
     switch self.placeholder {
     case .text(let value):
       return self.drawName(value, size: size)
-    case .icon(let name, let bundle):
-      let icon = UIImage(named: name, in: bundle, with: nil)
-      return self.drawIcon(icon, size: size)
-    case .sfSymbol(let name):
-      let systemIcon = UIImage(systemName: name)
-      return self.drawIcon(systemIcon, size: size)
+    case .image(let image):
+      return self.drawIcon(image.uiImage, size: size)
     }
   }
 
