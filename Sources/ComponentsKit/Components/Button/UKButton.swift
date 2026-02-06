@@ -255,9 +255,9 @@ extension UKButton {
       view.isVisible = model.isLoading
     }
     static func imageView(_ imageView: UIImageView, model: Model) {
-      imageView.image = model.image
+      imageView.image = model.imageWithLegacyFallback?.uiImage
       imageView.contentMode = .scaleAspectFit
-      imageView.isHidden = model.isLoading || model.imageSrc.isNil
+      imageView.isHidden = model.isImageHidden
       imageView.tintColor = model.foregroundColor.uiColor
       imageView.isUserInteractionEnabled = true
     }
