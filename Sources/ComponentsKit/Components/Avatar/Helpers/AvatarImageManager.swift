@@ -15,8 +15,8 @@ final class AvatarImageManager: ObservableObject {
     case .remote(let url):
       self.avatarImage = model.placeholderImage(for: size)
       self.downloadImage(url: url)
-    case let .local(name, bundle):
-      self.avatarImage = UIImage(named: name, in: bundle, compatibleWith: nil) ?? model.placeholderImage(for: size)
+    case .local(let image):
+      self.avatarImage = image.uiImage ?? model.placeholderImage(for: size)
     case .none:
       self.avatarImage = model.placeholderImage(for: size)
     }
@@ -33,8 +33,8 @@ final class AvatarImageManager: ObservableObject {
         self.avatarImage = model.placeholderImage(for: size)
         self.downloadImage(url: url)
       }
-    case let .local(name, bundle):
-      self.avatarImage = UIImage(named: name, in: bundle, compatibleWith: nil) ?? model.placeholderImage(for: size)
+    case .local(let image):
+      self.avatarImage = image.uiImage ?? model.placeholderImage(for: size)
     case .none:
       self.avatarImage = model.placeholderImage(for: size)
     }

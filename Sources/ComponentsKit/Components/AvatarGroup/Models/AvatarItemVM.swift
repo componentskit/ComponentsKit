@@ -6,7 +6,7 @@ public struct AvatarItemVM: ComponentVM {
   public var imageSrc: AvatarVM.ImageSource?
 
   /// The placeholder that is displayed if the image is not provided or fails to load.
-  public var placeholder: AvatarVM.Placeholder = .icon("avatar_placeholder", Bundle.module)
+  public var placeholder: AvatarVM.Placeholder = .image(.init("avatar_placeholder", bundle: .module))
 
   /// Initializes a new instance of `AvatarItemVM` with default values.
   public init() {}

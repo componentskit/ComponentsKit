@@ -50,38 +50,32 @@ public struct SUButton: View {
 
   @ViewBuilder
   private var content: some View {
-    switch (self.model.isLoading, self.model.image, self.model.imageLocation) {
+    switch (self.model.isLoading, self.model.imageWithLegacyFallback, self.model.imageLocation) {
     case (true, _, _) where self.model.title.isEmpty:
       SULoading(model: self.model.preferredLoadingVM)
     case (true, _, _):
       SULoading(model: self.model.preferredLoadingVM)
       Text(self.model.title)
-    case (false, let uiImage?, .leading) where self.model.title.isEmpty:
-      ButtonImageView(
-        image: uiImage,
-        tintColor: self.model.foregroundColor.uiColor
+    case (false, let image?, _) where self.model.title.isEmpty:
+      ButtonImage(
+        image: image,
+        tintColor: self.model.foregroundColor,
+        side: self.model.imageSide
       )
-      .frame(width: self.model.imageSide, height: self.model.imageSide)
-    case (false, let uiImage?, .leading):
-      ButtonImageView(
-        image: uiImage,
-        tintColor: self.model.foregroundColor.uiColor
+    case (false, let image?, .leading):
+      ButtonImage(
+        image: image,
+        tintColor: self.model.foregroundColor,
+        side: self.model.imageSide
       )
-      .frame(width: self.model.imageSide, height: self.model.imageSide)
       Text(self.model.title)
-    case (false, let uiImage?, .trailing) where self.model.title.isEmpty:
-      ButtonImageView(
-        image: uiImage,
-        tintColor: self.model.foregroundColor.uiColor
-      )
-      .frame(width: self.model.imageSide, height: self.model.imageSide)
-    case (false, let uiImage?, .trailing):
+    case (false, let image?, .trailing):
       Text(self.model.title)
-      ButtonImageView(
-        image: uiImage,
-        tintColor: self.model.foregroundColor.uiColor
+      ButtonImage(
+        image: image,
+        tintColor: self.model.foregroundColor,
+        side: self.model.imageSide
       )
-      .frame(width: self.model.imageSide, height: self.model.imageSide)
     case (false, _, _):
       Text(self.model.title)
     }
@@ -90,28 +84,27 @@ public struct SUButton: View {
 
 // MARK: - Helpers
 
-private struct ButtonImageView: UIViewRepresentable {
-  class InternalImageView: UIImageView {
-    override var intrinsicContentSize: CGSize {
-      return .zero
-    }
+private struct ButtonImage: View {
+  let universalImage: UniversalImage
+  let tintColor: UniversalColor
+  let side: CGFloat
+
+  init(
+    image: UniversalImage,
+    tintColor: UniversalColor,
+    side: CGFloat
+  ) {
+    self.universalImage = image
+    self.tintColor = tintColor
+    self.side = side
   }
 
-  let image: UIImage
-  let tintColor: UIColor
-
-  func makeUIView(context: Context) -> UIImageView {
-    let imageView = InternalImageView()
-    imageView.image = self.image
-    imageView.tintColor = self.tintColor
-    imageView.contentMode = .scaleAspectFit
-    imageView.isUserInteractionEnabled = true
-    return imageView
-  }
-
-  func updateUIView(_ imageView: UIImageView, context: Context) {
-    imageView.image = self.image
-    imageView.tintColor = self.tintColor
+  var body: some View {
+    self.universalImage.image
+      .resizable()
+      .scaledToFit()
+      .tint(self.tintColor.color)
+      .frame(width: self.side, height: self.side)
   }
 }
 
