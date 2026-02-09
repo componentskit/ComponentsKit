@@ -41,8 +41,13 @@ public struct CircularProgressVM: ComponentVM {
 
   /// The  size of the circular progress.
   ///
+  /// If nil, the view is intended to expand to the available space provided by
+  /// the surrounding layout:
+  /// - In SwiftUI, constrain it with .frame(...).
+  /// - In UIKit, constrain it with Auto Layout.
+  ///
   /// Defaults to `.medium`.
-  public var size: ComponentSize = .medium
+  public var size: ComponentSize? = .medium
 
   /// Initializes a new instance of `CircularProgressVM` with default values.
   public init() {}
@@ -55,10 +60,20 @@ extension CircularProgressVM {
     return 0.2
   }
   var circularLineWidth: CGFloat {
-    return self.lineWidth ?? max(self.preferredSize.width / 8, 2)
+    if let lineWidth {
+      return lineWidth
+    } else if let width = self.preferredSize?.width {
+      return max(width / 8, 2)
+    } else {
+      return 3
+    }
   }
-  var preferredSize: CGSize {
-    switch self.size {
+  var preferredSize: CGSize? {
+    guard let size else {
+      return nil
+    }
+
+    switch size {
     case .small:
       return CGSize(width: 48, height: 48)
     case .medium:
@@ -67,14 +82,11 @@ extension CircularProgressVM {
       return CGSize(width: 80, height: 80)
     }
   }
-  var radius: CGFloat {
-    return self.preferredSize.height / 2 - self.circularLineWidth / 2
+  func radius(size: CGSize) -> CGFloat {
+    return min(size.width, size.height) / 2 - self.circularLineWidth / 2
   }
-  var center: CGPoint {
-    return .init(
-      x: self.preferredSize.width / 2,
-      y: self.preferredSize.height / 2
-    )
+  func center(size: CGSize) -> CGPoint {
+    return .init(x: size.width / 2, y: size.height / 2)
   }
   var startAngle: CGFloat {
     switch self.shape {
@@ -99,7 +111,7 @@ extension CircularProgressVM {
     switch self.size {
     case .small:
       return .smCaption
-    case .medium:
+    case .medium, .none:
       return .mdCaption
     case .large:
       return .lgCaption

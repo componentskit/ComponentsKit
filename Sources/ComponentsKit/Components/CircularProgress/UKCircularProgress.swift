@@ -37,7 +37,7 @@ open class UKCircularProgress: UIView, UKComponent {
   // MARK: - UIView Properties
 
   open override var intrinsicContentSize: CGSize {
-    return self.model.preferredSize
+    return self.sizeThatFits(UIView.layoutFittingExpandedSize)
   }
 
   // MARK: - Initialization
@@ -130,12 +130,9 @@ open class UKCircularProgress: UIView, UKComponent {
   }
 
   private func updateShapePaths() {
-    let center = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
-    let minSide = min(self.bounds.width, self.bounds.height)
-    let radius = (minSide - self.model.circularLineWidth) / 2
     let circlePath = UIBezierPath(
-      arcCenter: center,
-      radius: radius,
+      arcCenter: self.model.center(size: self.bounds.size),
+      radius: self.model.radius(size: self.bounds.size),
       startAngle: self.model.startAngle,
       endAngle: self.model.endAngle,
       clockwise: true
@@ -171,10 +168,10 @@ open class UKCircularProgress: UIView, UKComponent {
   // MARK: - UIView Methods
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    let preferred = self.model.preferredSize
-    return CGSize(
-      width: min(size.width, preferred.width),
-      height: min(size.height, preferred.height)
+    let preferredSize = self.model.preferredSize ?? size
+    return .init(
+      width: min(preferredSize.width, size.width),
+      height: min(preferredSize.height, size.height)
     )
   }
 

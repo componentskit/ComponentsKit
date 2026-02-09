@@ -40,49 +40,47 @@ public struct SUCircularProgress: View {
 
   public var body: some View {
     ZStack {
-      // Background part
-      Path { path in
-        path.addArc(
-          center: self.model.center,
-          radius: self.model.radius,
-          startAngle: .radians(self.model.startAngle),
-          endAngle: .radians(self.model.endAngle),
-          clockwise: false
+      GeometryReader { geometry in
+        // Background part
+        Path { path in
+          path.addArc(
+            center: self.model.center(size: geometry.size),
+            radius: self.model.radius(size: geometry.size),
+            startAngle: .radians(self.model.startAngle),
+            endAngle: .radians(self.model.endAngle),
+            clockwise: false
+          )
+        }
+        .stroke(
+          self.model.color.background.color,
+          style: StrokeStyle(
+            lineWidth: self.model.circularLineWidth,
+            lineCap: self.model.lineCap.cgLineCap
+          )
         )
-      }
-      .stroke(
-        self.model.color.background.color,
-        style: StrokeStyle(
-          lineWidth: self.model.circularLineWidth,
-          lineCap: self.model.lineCap.cgLineCap
-        )
-      )
-      .frame(
-        width: self.model.preferredSize.width,
-        height: self.model.preferredSize.height
-      )
 
-      // Foreground part
-      Path { path in
-        path.addArc(
-          center: self.model.center,
-          radius: self.model.radius,
-          startAngle: .radians(self.model.startAngle),
-          endAngle: .radians(self.model.endAngle),
-          clockwise: false
+        // Foreground part
+        Path { path in
+          path.addArc(
+            center: self.model.center(size: geometry.size),
+            radius: self.model.radius(size: geometry.size),
+            startAngle: .radians(self.model.startAngle),
+            endAngle: .radians(self.model.endAngle),
+            clockwise: false
+          )
+        }
+        .trim(from: 0, to: self.progress)
+        .stroke(
+          self.model.color.main.color,
+          style: StrokeStyle(
+            lineWidth: self.model.circularLineWidth,
+            lineCap: self.model.lineCap.cgLineCap
+          )
         )
       }
-      .trim(from: 0, to: self.progress)
-      .stroke(
-        self.model.color.main.color,
-        style: StrokeStyle(
-          lineWidth: self.model.circularLineWidth,
-          lineCap: self.model.lineCap.cgLineCap
-        )
-      )
       .frame(
-        width: self.model.preferredSize.width,
-        height: self.model.preferredSize.height
+        width: self.model.preferredSize?.width,
+        height: self.model.preferredSize?.height
       )
 
       // Optional label
