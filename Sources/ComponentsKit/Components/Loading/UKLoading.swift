@@ -66,12 +66,6 @@ open class UKLoading: UIView, UKComponent {
 
     NotificationCenter.default.addObserver(
       self,
-      selector: #selector(self.handleAppWillMoveToBackground),
-      name: UIApplication.willResignActiveNotification,
-      object: nil
-    )
-    NotificationCenter.default.addObserver(
-      self,
       selector: #selector(self.handleAppMovedFromBackground),
       name: UIApplication.didBecomeActiveNotification,
       object: nil
@@ -88,13 +82,10 @@ open class UKLoading: UIView, UKComponent {
     self.shapeLayer.lineWidth = self.model.loadingLineWidth
     self.shapeLayer.strokeColor = self.model.color.main.uiColor.cgColor
     self.shapeLayer.fillColor = UIColor.clear.cgColor
-    self.shapeLayer.lineCap = .round
+    self.shapeLayer.lineCap = self.model.lineCap.shapeLayerLineCap
     self.shapeLayer.strokeEnd = 0.75
   }
 
-  @objc private func handleAppWillMoveToBackground() {
-    self.shapeLayer.removeAllAnimations()
-  }
   @objc private func handleAppMovedFromBackground() {
     self.addSpinnerAnimation()
   }
@@ -106,6 +97,7 @@ open class UKLoading: UIView, UKComponent {
 
     self.shapeLayer.lineWidth = self.model.loadingLineWidth
     self.shapeLayer.strokeColor = self.model.color.main.uiColor.cgColor
+    self.shapeLayer.lineCap = self.model.lineCap.shapeLayerLineCap
 
     if self.model.shouldUpdateShapePath(oldModel) {
       self.updateShapePath()
@@ -116,11 +108,9 @@ open class UKLoading: UIView, UKComponent {
   }
 
   private func updateShapePath() {
-    let radius = self.model.preferredSize.height / 2 - self.shapeLayer.lineWidth / 2
-    let center = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
     self.shapeLayer.path = UIBezierPath(
-      arcCenter: center,
-      radius: radius,
+      arcCenter: self.model.center(size: self.bounds.size),
+      radius: self.model.radius(size: self.bounds.size),
       startAngle: 0,
       endAngle: 2 * .pi,
       clockwise: true
@@ -132,9 +122,11 @@ open class UKLoading: UIView, UKComponent {
   open override func layoutSubviews() {
     super.layoutSubviews()
 
-    // Adjust the layer's frame to fit within the view's bounds
+    CATransaction.begin()
+    CATransaction.setDisableActions(true)
     self.shapeLayer.frame = self.bounds
     self.updateShapePath()
+    CATransaction.commit()
 
     if self.isVisible {
       self.addSpinnerAnimation()
@@ -144,7 +136,7 @@ open class UKLoading: UIView, UKComponent {
   // MARK: UIView methods
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    let preferredSize = self.model.preferredSize
+    let preferredSize = self.model.preferredSize ?? size
     return .init(
       width: min(preferredSize.width, size.width),
       height: min(preferredSize.height, size.height)
@@ -161,13 +153,19 @@ open class UKLoading: UIView, UKComponent {
   // MARK: Helpers
 
   private func addSpinnerAnimation() {
+    let animationKey = "rotationAnimation"
+
+    guard self.shapeLayer.animation(forKey: animationKey).isNil else {
+      return
+    }
+
     let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
     rotationAnimation.fromValue = 0
     rotationAnimation.toValue = CGFloat.pi * 2
     rotationAnimation.duration = 1.0
     rotationAnimation.repeatCount = .infinity
     rotationAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
-    self.shapeLayer.add(rotationAnimation, forKey: "rotationAnimation")
+    self.shapeLayer.add(rotationAnimation, forKey: animationKey)
   }
 
   private func handleTraitChanges() {

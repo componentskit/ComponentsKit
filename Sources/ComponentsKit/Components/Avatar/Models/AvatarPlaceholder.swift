@@ -13,21 +13,21 @@ extension AvatarVM {
     /// - Note: Only 3 first letters are displayed.
     case text(String)
 
+    /// A placeholder that displays an image.
+    ///
+    /// - Parameter image: See ``UniversalImage``.
+    case image(_ image: UniversalImage)
+
     /// A placeholder that displays an SF Symbol.
-    ///
-    /// This option allows you to use Apple's system-provided icons as placeholders.
-    ///
-    /// - Parameter name: The name of the SF Symbol to display.
-    /// - Note: Ensure that the SF Symbol name corresponds to an existing icon in the system's symbol library.
-    case sfSymbol(_ name: String)
+    @available(*, deprecated, message: "Use `image(_:)` instead.")
+    public static func sfSymbol(_ name: String) -> Self {
+      return .image(.init(systemName: name))
+    }
 
     /// A placeholder that displays a custom icon from an asset catalog.
-    ///
-    /// This option allows you to use icons from your app's bundled resources or a specified bundle.
-    ///
-    /// - Parameters:
-    ///   - name: The name of the icon asset to use as the placeholder.
-    ///   - bundle: The bundle containing the icon resource. Defaults to `nil`, which uses the main bundle.
-    case icon(_ name: String, _ bundle: Bundle? = nil)
+    @available(*, deprecated, message: "Use `image(_:)` instead.")
+    public static func icon(_ name: String, _ bundle: Bundle? = nil) -> Self {
+      return .image(.init(name, bundle: bundle))
+    }
   }
 }

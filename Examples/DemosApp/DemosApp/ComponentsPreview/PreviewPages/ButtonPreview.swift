@@ -35,15 +35,26 @@ struct ButtonPreview: View {
           Text("Leading").tag(ButtonVM.ImageLocation.leading)
           Text("Trailing").tag(ButtonVM.ImageLocation.trailing)
         }
-        Picker("Image Rendering Mode", selection: self.$model.imageRenderingMode) {
-          Text("Default").tag(Optional<ImageRenderingMode>.none)
-          Text("Template").tag(ImageRenderingMode.template)
-          Text("Original").tag(ImageRenderingMode.original)
-        }
-        Picker("Image Source", selection: self.$model.imageSrc) {
-          Text("SF Symbol").tag(ButtonVM.ImageSource.sfSymbol("camera.fill"))
-          Text("Local").tag(ButtonVM.ImageSource.local("avatar_placeholder"))
-          Text("None").tag(Optional<ButtonVM.ImageSource>.none)
+        Picker("Image", selection: self.$model.image) {
+          Text("SF Symbol").tag(UniversalImage(systemName: "camera.fill"))
+          Text("SF Symbol (Template)").tag(
+            UniversalImage(systemName: "camera.fill")
+              .withRenderingMode(.template)
+          )
+          Text("SF Symbol (Original)").tag(
+            UniversalImage(systemName: "camera.fill")
+              .withRenderingMode(.original)
+          )
+          Text("Local").tag(UniversalImage("avatar_placeholder"))
+          Text("Local (Template)").tag(
+            UniversalImage("avatar_placeholder")
+              .withRenderingMode(.template)
+          )
+          Text("Local (Original)").tag(
+            UniversalImage("avatar_placeholder")
+              .withRenderingMode(.original)
+          )
+          Text("None").tag(Optional<UniversalImage>.none)
         }
         Toggle("Loading", isOn: self.$model.isLoading)
         Toggle("Show Title", isOn: Binding<Bool>(

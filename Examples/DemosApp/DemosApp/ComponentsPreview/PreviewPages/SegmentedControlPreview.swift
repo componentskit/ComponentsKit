@@ -18,7 +18,7 @@ struct SegmentedControlPreview: View {
         $0.title = "iPad"
       },
       .init(id: .mac) {
-        $0.title = "Mackbook"
+        $0.title = "Macbook"
       }
     ]
   }

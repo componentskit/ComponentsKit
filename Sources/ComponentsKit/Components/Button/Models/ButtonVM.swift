@@ -25,15 +25,20 @@ public struct ButtonVM: ComponentVM {
   /// If not provided, the font is automatically calculated based on the button's size.
   public var font: UniversalFont?
 
+  /// The image to be displayed.
+  public var image: UniversalImage?
+
   /// The position of the image relative to the button's title.
   ///
   /// Defaults to `.leading`.
   public var imageLocation: ImageLocation = .leading
 
   /// Defines how image is rendered.
+  @available(*, deprecated, message: "Use `image.withRenderingMode(_:)` instead.")
   public var imageRenderingMode: ImageRenderingMode?
 
   /// The source of the image to be displayed.
+  @available(*, deprecated, message: "Use `image` instead.")
   public var imageSrc: ImageSource?
 
   /// A Boolean value indicating whether the button is enabled or disabled.
@@ -182,25 +187,31 @@ extension ButtonVM {
       }
     }
   }
-}
+  var imageWithLegacyFallback: UniversalImage? {
+    if let image { return image }
 
-extension ButtonVM {
-  var image: UIImage? {
     guard let imageSrc else { return nil }
 
     let image = switch imageSrc {
     case .sfSymbol(let name):
-      UIImage(systemName: name)
+      UniversalImage(systemName: name)
     case .local(let name, let bundle):
-      UIImage(named: name, in: bundle, compatibleWith: nil)
+      UniversalImage(name, bundle: bundle)
     }
-    return image?.withRenderingMode(self.imageRenderingMode)
+    if let imageRenderingMode {
+      return image.withRenderingMode(imageRenderingMode)
+    } else {
+      return image
+    }
   }
 }
 
 // MARK: UIKit Helpers
 
 extension ButtonVM {
+  var isImageHidden: Bool {
+    return self.isLoading || self.imageWithLegacyFallback.isNil
+  }
   func preferredSize(
     for contentSize: CGSize,
     parentWidth: CGFloat?
@@ -232,7 +243,7 @@ extension ButtonVM {
     || self.font != oldModel.font
     || self.isFullWidth != oldModel.isFullWidth
     || self.isLoading != oldModel.isLoading
-    || self.imageSrc != oldModel.imageSrc
+    || self.imageWithLegacyFallback != oldModel.imageWithLegacyFallback
     || self.contentSpacing != oldModel.contentSpacing
     || self.title != oldModel.title
   }
