@@ -7,6 +7,9 @@ public struct LoadingVM: ComponentVM {
   /// Defaults to `.accent`.
   public var color: ComponentColor = .accent
 
+  /// The style of line endings.
+  public var lineCap: LineCap = .rounded
+
   /// The width of the lines used in the loading indicator.
   ///
   /// If not provided, the line width is automatically adjusted based on the size.
@@ -14,13 +17,13 @@ public struct LoadingVM: ComponentVM {
 
   /// The predefined size of the loading indicator.
   ///
-  /// Defaults to `.medium`.
-  public var size: ComponentSize = .medium
-
-  /// The style of the loading indicator (e.g., spinner, bar).
+  /// If nil, the loader is intended to expand to the available space provided by
+  /// the surrounding layout:
+  /// - In SwiftUI, constrain it with .frame(...).
+  /// - In UIKit, constrain it with Auto Layout.
   ///
-  /// Defaults to `.spinner`.
-  public var style: Style = .spinner
+  /// Defaults to `.medium`.
+  public var size: ComponentSize? = .medium
 
   /// Initializes a new instance of `LoadingVM` with default values.
   public init() {}
@@ -30,23 +33,33 @@ public struct LoadingVM: ComponentVM {
 
 extension LoadingVM {
   var loadingLineWidth: CGFloat {
-    return self.lineWidth ?? max(self.preferredSize.width / 8, 2)
-  }
-  var preferredSize: CGSize {
-    switch self.style {
-    case .spinner:
-      switch self.size {
-      case .small:
-        return .init(width: 24, height: 24)
-      case .medium:
-        return .init(width: 36, height: 36)
-      case .large:
-        return .init(width: 48, height: 48)
-      }
+    if let lineWidth {
+      return lineWidth
+    } else if let width = self.preferredSize?.width {
+      return max(width / 8, 2)
+    } else {
+      return 3
     }
   }
-  var radius: CGFloat {
-    return self.preferredSize.height / 2 - self.loadingLineWidth / 2
+  var preferredSize: CGSize? {
+    guard let size else {
+      return nil
+    }
+
+    switch size {
+    case .small:
+      return .init(width: 24, height: 24)
+    case .medium:
+      return .init(width: 36, height: 36)
+    case .large:
+      return .init(width: 48, height: 48)
+    }
+  }
+  func radius(size: CGSize) -> CGFloat {
+    return min(size.width, size.height) / 2 - self.loadingLineWidth / 2
+  }
+  func center(size: CGSize) -> CGPoint {
+    return .init(x: size.width / 2, y: size.height / 2)
   }
 }
 
@@ -55,16 +68,5 @@ extension LoadingVM {
 extension LoadingVM {
   func shouldUpdateShapePath(_ oldModel: Self) -> Bool {
     return self.size != oldModel.size || self.lineWidth != oldModel.lineWidth
-  }
-}
-
-// MARK: SwiftUI Helpers
-
-extension LoadingVM {
-  var center: CGPoint {
-    return .init(
-      x: self.preferredSize.width / 2,
-      y: self.preferredSize.height / 2
-    )
   }
 }

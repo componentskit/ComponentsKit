@@ -16,14 +16,12 @@ struct LoadingPreview: View {
       }
       Form {
         ComponentColorPicker(selection: self.$model.color)
+        LineCapPicker(selection: self.$model.lineCap)
         Picker("Line Width", selection: self.$model.lineWidth) {
           Text("Default").tag(Optional<CGFloat>.none)
           Text("Custom: 6px").tag(CGFloat(6.0))
         }
-        SizePicker(selection: self.$model.size)
-        Picker("Style", selection: self.$model.style) {
-          Text("Spinner").tag(LoadingVM.Style.spinner)
-        }
+        OptionalSizePicker(selection: self.$model.size)
       }
     }
   }

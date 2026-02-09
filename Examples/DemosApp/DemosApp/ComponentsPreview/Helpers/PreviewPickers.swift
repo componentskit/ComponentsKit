@@ -254,6 +254,19 @@ struct KeyboardTypePicker: View {
   }
 }
 
+// MARK: - LineCap
+
+struct LineCapPicker: View {
+  @Binding var selection: LineCap
+  
+  var body: some View {
+    Picker("Line Cap", selection: self.$selection) {
+      Text("Rounded").tag(LineCap.rounded)
+      Text("Square").tag(LineCap.square)
+    }
+  }
+}
+
 // MARK: - OverlayStylePicker
 
 struct OverlayStylePicker: View {
@@ -275,6 +288,19 @@ struct SizePicker: View {
 
   var body: some View {
     Picker("Size", selection: self.$selection) {
+      Text("Small").tag(ComponentSize.small)
+      Text("Medium").tag(ComponentSize.medium)
+      Text("Large").tag(ComponentSize.large)
+    }
+  }
+}
+
+struct OptionalSizePicker: View {
+  @Binding var selection: ComponentSize?
+
+  var body: some View {
+    Picker("Size", selection: self.$selection) {
+      Text("Nil").tag(Optional<ComponentSize>.none)
       Text("Small").tag(ComponentSize.small)
       Text("Medium").tag(ComponentSize.medium)
       Text("Large").tag(ComponentSize.large)
