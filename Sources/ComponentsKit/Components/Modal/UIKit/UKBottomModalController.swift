@@ -104,11 +104,11 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
     animated flag: Bool,
     completion: (() -> Void)? = nil
   ) {
-    UIView.animate(withDuration: self.model.transition.value) {
+    UIView.animate(withDuration: flag ? self.model.transition.value : 0.0) {
       self.contentView.transform = .init(translationX: 0, y: self.view.screenBounds.height)
       self.overlay.alpha = 0
     } completion: { _ in
-      super.dismiss(animated: false)
+      super.dismiss(animated: false, completion: completion)
     }
   }
 }
