@@ -18,7 +18,7 @@ open class UKButton: FullWidthComponent, UKComponent {
   /// A Boolean value indicating whether the button is pressed.
   public private(set) var isPressed: Bool = false {
     didSet {
-      guard self.model.isTapAnimationEnabled else { return }
+      guard self.model.isCustomTapAnimationEnabled else { return }
       UIView.animate(withDuration: 0.05, delay: 0, options: [.curveEaseOut]) {
         self.transform = self.isPressed && self.model.isInteractive
         ? .init(

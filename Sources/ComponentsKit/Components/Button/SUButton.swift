@@ -54,7 +54,7 @@ public struct SUButton: View {
         .onEnded { _ in
           self.scale = 1.0
         },
-      isEnabled: self.model.isTapAnimationEnabled
+      isEnabled: self.model.isCustomTapAnimationEnabled
     )
     .disabled(!self.model.isInteractive)
     .scaleEffect(self.scale, anchor: .center)

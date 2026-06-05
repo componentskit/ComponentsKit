@@ -89,10 +89,10 @@ extension ButtonVM {
   var isInteractive: Bool {
     self.isEnabled && !self.isLoading
   }
-  var isTapAnimationEnabled: Bool {
+  var isCustomTapAnimationEnabled: Bool {
     switch self.backgroundStyle {
     case .solid, .blur:
-      return self.isInteractive
+      return true
     case .liquidGlass:
       return false
     }
