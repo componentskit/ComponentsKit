@@ -55,11 +55,9 @@ struct ModalContent<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
         .padding(.bottom, self.model.contentPaddings.bottom)
     }
     .frame(maxWidth: self.model.size.maxWidth, alignment: .leading)
-    .background(self.model.preferredBackgroundColor.color)
-    .clipShape(RoundedRectangle(cornerRadius: self.model.cornerRadius.value))
-    .overlay(
-      RoundedRectangle(cornerRadius: self.model.cornerRadius.value)
-        .strokeBorder(UniversalColor.divider.color, lineWidth: self.model.borderWidth.value)
+    .modalBackground(
+      shape: RoundedRectangle(cornerRadius: model.cornerRadius.value),
+      model: self.model
     )
     .padding(self.model.outerPaddings.edgeInsets)
   }
@@ -72,5 +70,45 @@ struct ModalContent<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
   }
   private var scrollViewMaxHeight: CGFloat {
     return self.bodySize.height + self.bodyTopPadding + self.bodyBottomPadding
+  }
+}
+
+extension View {
+  @ViewBuilder
+  fileprivate func modalBackground<BackgroundShape: InsettableShape>(
+    shape: BackgroundShape,
+    model: any ModalVM
+  ) -> some View {
+    switch model.backgroundStyle {
+    case .solid:
+      self.background(model.preferredBackgroundColor?.color)
+        .clipShape(shape)
+        .overlay(
+          shape
+            .strokeBorder(UniversalColor.divider.color, lineWidth: model.borderWidth.value)
+        )
+    case .blur:
+      self.background {
+        shape
+          .fill(.thinMaterial)
+          .overlay {
+            shape.fill(model.preferredBackgroundColor?.color ?? .clear)
+          }
+          .overlay {
+            shape.strokeBorder(UniversalColor.divider.color, lineWidth: model.borderWidth.value)
+          }
+      }
+    case .liquidGlass:
+      if #available(iOS 26.0, *) {
+        self.glassEffect(
+          .regular
+            .tint(model.preferredBackgroundColor?.color)
+            .interactive(),
+          in: shape
+        )
+      } else {
+        self
+      }
+    }
   }
 }

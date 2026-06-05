@@ -260,7 +260,7 @@ extension UKModalController {
       }
     }
     static func contentView(_ view: UIView, model: VM) {
-      view.backgroundColor = model.preferredBackgroundColor.uiColor
+      view.backgroundColor = model.backgroundColor?.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
       view.layer.borderColor = UniversalColor.divider.cgColor
       view.layer.borderWidth = model.borderWidth.value

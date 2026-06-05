@@ -5,6 +5,9 @@ public struct BottomModalVM: ModalVM {
   /// The background color of the modal.
   public var backgroundColor: UniversalColor?
 
+  /// Defines how modal renders its background.
+  public var backgroundStyle: BackgroundStyle = .solid
+
   /// The border thickness of the modal.
   ///
   /// Defaults to `.small`.
