@@ -88,16 +88,16 @@ extension View {
             .strokeBorder(UniversalColor.divider.color, lineWidth: model.borderWidth.value)
         )
     case .blur:
-      self.background {
-        shape
-          .fill(.thinMaterial)
-          .overlay {
-            shape.fill(model.preferredBackgroundColor?.color ?? .clear)
-          }
-          .overlay {
-            shape.strokeBorder(UniversalColor.divider.color, lineWidth: model.borderWidth.value)
-          }
-      }
+      self
+        .background {
+          shape
+            .fill(.thinMaterial)
+            .overlay {
+              shape.strokeBorder(UniversalColor.divider.color, lineWidth: model.borderWidth.value)
+            }
+        }
+        .background(model.preferredBackgroundColor?.color)
+        .clipShape(shape)
     case .liquidGlass:
       if #available(iOS 26.0, *) {
         self.glassEffect(

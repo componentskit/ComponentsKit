@@ -266,20 +266,21 @@ extension UKModalController {
       }
     }
     static func contentView(_ view: UIView, model: VM) {
-      view.backgroundColor = model.preferredBackgroundColor?.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
-      view.layer.borderColor = UniversalColor.divider.cgColor
-      view.layer.borderWidth = model.borderWidth.value
     }
     static func backgroundEffectView(_ view: UIVisualEffectView, model: VM) {
       view.layer.cornerRadius = model.cornerRadius.value
+      view.layer.borderColor = UniversalColor.divider.cgColor
+      view.layer.borderWidth = model.borderWidth.value
       view.clipsToBounds = true
 
       switch model.backgroundStyle {
       case .solid:
         view.effect = nil
+        view.backgroundColor = model.preferredBackgroundColor?.uiColor
       case .blur:
         view.effect = UIBlurEffect(style: .systemThinMaterial)
+        view.backgroundColor = model.preferredBackgroundColor?.uiColor
       case .liquidGlass:
         if #available(iOS 26.0, *) {
           let effect = UIGlassEffect(style: .regular)
