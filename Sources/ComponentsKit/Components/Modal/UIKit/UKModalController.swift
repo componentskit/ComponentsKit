@@ -269,28 +269,13 @@ extension UKModalController {
       view.layer.cornerRadius = model.cornerRadius.value
     }
     static func backgroundEffectView(_ view: UIVisualEffectView, model: VM) {
-      view.layer.cornerRadius = model.cornerRadius.value
-      view.layer.borderColor = UniversalColor.divider.cgColor
-      view.layer.borderWidth = model.borderWidth.value
-      view.clipsToBounds = true
-
-      switch model.backgroundStyle {
-      case .solid:
-        view.effect = nil
-        view.backgroundColor = model.preferredBackgroundColor?.uiColor
-      case .blur:
-        view.effect = UIBlurEffect(style: .systemThinMaterial)
-        view.backgroundColor = model.preferredBackgroundColor?.uiColor
-      case .liquidGlass:
-        if #available(iOS 26.0, *) {
-          let effect = UIGlassEffect(style: .regular)
-          effect.tintColor = model.preferredBackgroundColor?.uiColor
-          effect.isInteractive = true
-          view.effect = effect
-        } else {
-          view.effect = nil
-        }
-      }
+      view.setBackgroundStyle(
+        model.backgroundStyle,
+        backgroundColor: model.preferredBackgroundColor?.uiColor,
+        borderColor: UniversalColor.divider.uiColor,
+        borderWidth: model.borderWidth.value,
+        cornerRadius: model.cornerRadius.value
+      )
     }
     static func bodyWrapper(_ scrollView: UIScrollView) {
       scrollView.delaysContentTouches = false

@@ -212,30 +212,14 @@ extension UKCard {
       view.shadow(model.shadow)
     }
     static func backgroundEffectView(_ view: UIVisualEffectView, model: Model) {
-      view.contentView.layer.cornerRadius = model.cornerRadius.value
-      view.layer.cornerRadius = model.cornerRadius.value
-      view.layer.borderColor = model.borderColor.cgColor
-      view.layer.borderWidth = model.borderWidth.value
-      view.clipsToBounds = true
-
-      switch model.backgroundStyle {
-      case .solid:
-        view.effect = nil
-        view.backgroundColor = model.backgroundColor?.uiColor
-      case .blur:
-        view.effect = UIBlurEffect(style: .systemThinMaterial)
-        view.backgroundColor = model.backgroundColor?.uiColor
-      case .liquidGlass:
-        if #available(iOS 26.0, *) {
-          let effect = UIGlassEffect(style: .regular)
-          effect.tintColor = model.backgroundColor?.uiColor
-          effect.isInteractive = model.isTappable
-          view.effect = effect
-          view.backgroundColor = nil
-        } else {
-          view.effect = nil
-        }
-      }
+      view.setBackgroundStyle(
+        model.backgroundStyle,
+        backgroundColor: model.backgroundColor?.uiColor,
+        borderColor: model.borderColor.uiColor,
+        borderWidth: model.borderWidth.value,
+        cornerRadius: model.cornerRadius.value,
+        isGlassInteractive: model.isTappable
+      )
     }
   }
 }
