@@ -5,6 +5,9 @@ public protocol ModalVM: ComponentVM {
   /// The background color of the modal.
   var backgroundColor: UniversalColor? { get set }
 
+  /// Defines how modal renders its background.
+  var backgroundStyle: BackgroundStyle { get set }
+
   /// The border thickness of the modal.
   var borderWidth: BorderWidth { get set }
 
@@ -36,10 +39,15 @@ public protocol ModalVM: ComponentVM {
 // MARK: - Helpers
 
 extension ModalVM {
-  var preferredBackgroundColor: UniversalColor {
-    return self.backgroundColor ?? .themed(
-      light: UniversalColor.background.light,
-      dark: UniversalColor.secondaryBackground.dark
-    )
+  var preferredBackgroundColor: UniversalColor? {
+    switch self.backgroundStyle {
+    case .solid:
+      return self.backgroundColor ?? .themed(
+        light: UniversalColor.background.light,
+        dark: UniversalColor.secondaryBackground.dark
+      )
+    case .liquidGlass, .blur:
+      return self.backgroundColor
+    }
   }
 }

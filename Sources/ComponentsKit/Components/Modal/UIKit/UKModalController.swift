@@ -27,6 +27,8 @@ open class UKModalController<VM: ModalVM>: UIViewController {
   public var footer: UIView?
   /// The content view, holding the header, body, and footer.
   public let contentView = UIView()
+  /// The visual effect container used to render blur and liquid glass modal backgrounds.
+  public let backgroundEffectView = UIVisualEffectView()
   /// A scrollable wrapper for the body content.
   public let bodyWrapper: UIScrollView = ContentSizedScrollView()
   /// The overlay view that appears behind the modal.
@@ -76,12 +78,13 @@ open class UKModalController<VM: ModalVM>: UIViewController {
   open func setup() {
     self.view.addSubview(self.overlay)
     self.view.addSubview(self.contentView)
+    self.contentView.addSubview(self.backgroundEffectView)
     if let header {
-      self.contentView.addSubview(header)
+      self.backgroundEffectView.contentView.addSubview(header)
     }
-    self.contentView.addSubview(self.bodyWrapper)
+    self.backgroundEffectView.contentView.addSubview(self.bodyWrapper)
     if let footer {
-      self.contentView.addSubview(footer)
+      self.backgroundEffectView.contentView.addSubview(footer)
     }
 
     self.bodyWrapper.addSubview(self.body)
@@ -141,6 +144,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
   open func style() {
     Self.Style.overlay(self.overlay, model: self.model)
     Self.Style.contentView(self.contentView, model: self.model)
+    Self.Style.backgroundEffectView(self.backgroundEffectView, model: self.model)
     Self.Style.bodyWrapper(self.bodyWrapper)
   }
 
@@ -149,6 +153,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
   /// Configures the layout of the modal's subviews.
   open func layout() {
     self.overlay.allEdges()
+    self.backgroundEffectView.allEdges()
 
     if let header {
       header.top(self.model.contentPaddings.top)
@@ -242,6 +247,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   @objc private func handleTraitChanges() {
     Self.Style.contentView(self.contentView, model: self.model)
+    Self.Style.backgroundEffectView(self.backgroundEffectView, model: self.model)
   }
 }
 
@@ -252,7 +258,7 @@ extension UKModalController {
     static func overlay(_ view: UIView, model: VM) {
       switch model.overlayStyle {
       case .dimmed:
-        view.backgroundColor = .black.withAlphaComponent(0.7)
+        view.backgroundColor = .black.withAlphaComponent(0.35)
       case .transparent:
         view.backgroundColor = .clear
       case .blurred:
@@ -260,10 +266,31 @@ extension UKModalController {
       }
     }
     static func contentView(_ view: UIView, model: VM) {
-      view.backgroundColor = model.preferredBackgroundColor.uiColor
+      view.layer.cornerRadius = model.cornerRadius.value
+    }
+    static func backgroundEffectView(_ view: UIVisualEffectView, model: VM) {
       view.layer.cornerRadius = model.cornerRadius.value
       view.layer.borderColor = UniversalColor.divider.cgColor
       view.layer.borderWidth = model.borderWidth.value
+      view.clipsToBounds = true
+
+      switch model.backgroundStyle {
+      case .solid:
+        view.effect = nil
+        view.backgroundColor = model.preferredBackgroundColor?.uiColor
+      case .blur:
+        view.effect = UIBlurEffect(style: .systemThinMaterial)
+        view.backgroundColor = model.preferredBackgroundColor?.uiColor
+      case .liquidGlass:
+        if #available(iOS 26.0, *) {
+          let effect = UIGlassEffect(style: .regular)
+          effect.tintColor = model.preferredBackgroundColor?.uiColor
+          effect.isInteractive = true
+          view.effect = effect
+        } else {
+          view.effect = nil
+        }
+      }
     }
     static func bodyWrapper(_ scrollView: UIScrollView) {
       scrollView.delaysContentTouches = false
