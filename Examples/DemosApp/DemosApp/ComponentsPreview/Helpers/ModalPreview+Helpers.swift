@@ -65,13 +65,7 @@ struct ModalPreviewHelpers {
           Text("Warning Background").tag(UniversalColor.warningBackground)
           Text("Danger Background").tag(UniversalColor.dangerBackground)
         }
-        Picker("Background Style", selection: self.$model.backgroundStyle) {
-          Text("Solid").tag(BackgroundStyle.solid)
-          Text("Blur").tag(BackgroundStyle.blur)
-          if #available(iOS 26.0, *) {
-            Text("Liquid Glass").tag(BackgroundStyle.liquidGlass)
-          }
-        }
+        BackgroundStylePicker(selection: self.$model.backgroundStyle)
         BorderWidthPicker(selection: self.$model.borderWidth)
         Toggle("Closes On Overlay Tap", isOn: self.$model.closesOnOverlayTap)
           .disabled(self.footer == nil)
