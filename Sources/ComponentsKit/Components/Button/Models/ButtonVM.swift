@@ -10,6 +10,11 @@ public struct ButtonVM: ComponentVM {
   /// The color of the button.
   public var color: ComponentColor?
 
+  /// Defines how the button renders its background.
+  ///
+  /// Defaults to `.solid`.
+  public var backgroundStyle: BackgroundStyle = .solid
+
   /// The spacing between the button's title and its image or loading indicator.
   ///
   /// Defaults to `8.0`.
@@ -83,6 +88,14 @@ public struct ButtonVM: ComponentVM {
 extension ButtonVM {
   var isInteractive: Bool {
     self.isEnabled && !self.isLoading
+  }
+  var isCustomTapAnimationEnabled: Bool {
+    switch self.backgroundStyle {
+    case .solid, .blur:
+      return true
+    case .liquidGlass:
+      return false
+    }
   }
   var preferredLoadingVM: LoadingVM {
     return self.loadingVM ?? .init {
@@ -246,6 +259,7 @@ extension ButtonVM {
     || self.imageWithLegacyFallback != oldModel.imageWithLegacyFallback
     || self.contentSpacing != oldModel.contentSpacing
     || self.title != oldModel.title
+    || self.style != oldModel.style
   }
 }
 

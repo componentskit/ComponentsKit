@@ -33,15 +33,28 @@ public struct SUButton: View {
       HStack(spacing: self.model.contentSpacing) {
         self.content
       }
+      .font(self.model.preferredFont.font)
+      .lineLimit(1)
+      .padding(.horizontal, self.model.horizontalPadding)
+      .frame(maxWidth: self.model.width)
+      .frame(height: self.model.height)
+      .contentShape(.rect)
+      .foregroundStyle(self.model.foregroundColor.color)
+      .buttonBackground(
+        shape: RoundedRectangle(cornerRadius: self.model.cornerRadius.value()),
+        model: self.model
+      )
     }
-    .buttonStyle(CustomButtonStyle(model: self.model))
-    .simultaneousGesture(DragGesture(minimumDistance: 0.0)
-      .onChanged { _ in
-        self.scale = self.model.animationScale.value
-      }
-      .onEnded { _ in
-        self.scale = 1.0
-      }
+    .buttonStyle(CustomButtonStyle())
+    .simultaneousGesture(
+      DragGesture(minimumDistance: 0.0)
+        .onChanged { _ in
+          self.scale = self.model.animationScale.value
+        }
+        .onEnded { _ in
+          self.scale = 1.0
+        },
+      isEnabled: self.model.isCustomTapAnimationEnabled
     )
     .disabled(!self.model.isInteractive)
     .scaleEffect(self.scale, anchor: .center)
@@ -109,31 +122,60 @@ private struct ButtonImage: View {
 }
 
 private struct CustomButtonStyle: SwiftUI.ButtonStyle {
-  let model: ButtonVM
-
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .font(self.model.preferredFont.font)
-      .lineLimit(1)
-      .padding(.horizontal, self.model.horizontalPadding)
-      .frame(maxWidth: self.model.width)
-      .frame(height: self.model.height)
-      .contentShape(.rect)
-      .foregroundStyle(self.model.foregroundColor.color)
-      .background(self.model.backgroundColor?.color ?? .clear)
-      .clipShape(
-        RoundedRectangle(
-          cornerRadius: self.model.cornerRadius.value()
-        )
-      )
-      .overlay {
-        RoundedRectangle(
-          cornerRadius: self.model.cornerRadius.value()
-        )
-        .strokeBorder(
-          self.model.borderColor?.color ?? .clear,
-          lineWidth: self.model.borderWidth
-        )
+  }
+}
+
+extension View {
+  @ViewBuilder
+  fileprivate func buttonBackground<BackgroundShape: InsettableShape>(
+    shape: BackgroundShape,
+    model: ButtonVM
+  ) -> some View {
+    switch model.backgroundStyle {
+    case .solid:
+      self
+        .background(model.backgroundColor?.color ?? .clear)
+        .clipShape(shape)
+        .overlay {
+          shape.strokeBorder(
+            model.borderColor?.color ?? .clear,
+            lineWidth: model.borderWidth
+          )
+        }
+    case .blur:
+      self
+        .background {
+          shape
+            .fill(.thinMaterial)
+            .overlay {
+              shape.strokeBorder(
+                model.borderColor?.color ?? .clear,
+                lineWidth: model.borderWidth
+              )
+            }
+        }
+        .background(model.backgroundColor?.color)
+        .clipShape(shape)
+    case .liquidGlass:
+      if #available(iOS 26.0, *) {
+        self
+          .overlay {
+            shape.strokeBorder(
+              model.borderColor?.color ?? .clear,
+              lineWidth: model.borderWidth
+            )
+          }
+          .glassEffect(
+            .regular
+              .tint(model.backgroundColor?.color)
+              .interactive(model.isInteractive),
+            in: shape
+          )
+      } else {
+        self
       }
+    }
   }
 }
