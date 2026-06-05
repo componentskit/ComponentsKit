@@ -17,19 +17,6 @@ public struct SUProgressBar: View {
 
   /// Initializer.
   /// - Parameters:
-  ///   - currentValue: The current progress value.
-  ///   - model: A model that defines the appearance properties.
-  @available(*, deprecated, message: "Set `currentValue` in the model instead.")
-  public init(
-    currentValue: CGFloat,
-    model: ProgressBarVM = .init()
-  ) {
-    self.currentValue = currentValue
-    self.model = model
-  }
-
-  /// Initializer.
-  /// - Parameters:
   ///   - model: A model that defines the appearance properties.
   public init(model: ProgressBarVM) {
     self.model = model

@@ -63,7 +63,7 @@ public struct SUButton: View {
 
   @ViewBuilder
   private var content: some View {
-    switch (self.model.isLoading, self.model.imageWithLegacyFallback, self.model.imageLocation) {
+    switch (self.model.isLoading, self.model.image, self.model.imageLocation) {
     case (true, _, _) where self.model.title.isEmpty:
       SULoading(model: self.model.preferredLoadingVM)
     case (true, _, _):
