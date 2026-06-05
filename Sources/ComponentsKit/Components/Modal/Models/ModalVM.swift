@@ -47,7 +47,7 @@ extension ModalVM {
         dark: UniversalColor.secondaryBackground.dark
       )
     case .liquidGlass, .blur:
-      return nil
+      return self.backgroundColor
     }
   }
 }
