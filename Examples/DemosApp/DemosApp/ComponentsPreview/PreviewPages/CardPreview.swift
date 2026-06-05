@@ -17,6 +17,7 @@ struct CardPreview: View {
       Form {
         AnimationScalePicker(selection: self.$model.animationScale)
         Picker("Background Color", selection: self.$model.backgroundColor) {
+          Text("Clear").tag(Optional<UniversalColor>.none)
           Text("Background").tag(UniversalColor.background)
           Text("Secondary Background").tag(UniversalColor.secondaryBackground)
           Text("Accent Background").tag(UniversalColor.accentBackground)
@@ -24,6 +25,7 @@ struct CardPreview: View {
           Text("Warning Background").tag(UniversalColor.warningBackground)
           Text("Danger Background").tag(UniversalColor.dangerBackground)
         }
+        BackgroundStylePicker(selection: self.$model.backgroundStyle)
         Picker("Border Color", selection: self.$model.borderColor) {
           Text("Divider").tag(UniversalColor.divider)
           Text("Primary").tag(UniversalColor.primary)

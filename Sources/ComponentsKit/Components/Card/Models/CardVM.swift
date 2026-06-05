@@ -8,7 +8,10 @@ public struct CardVM: ComponentVM {
   public var animationScale: AnimationScale = .medium
 
   /// The background color of the card.
-  public var backgroundColor: UniversalColor = .background
+  public var backgroundColor: UniversalColor? = .background
+
+  /// Defines how the card renders its background.
+  public var backgroundStyle: BackgroundStyle = .solid
 
   /// The border color of the card.
   public var borderColor: UniversalColor = .divider
@@ -40,4 +43,17 @@ public struct CardVM: ComponentVM {
 
   /// Initializes a new instance of `CardVM` with default values.
   public init() {}
+}
+
+// MARK: - Helpers
+
+extension CardVM {
+  var isTapAnimationEnabled: Bool {
+    switch self.backgroundStyle {
+    case .solid, .blur:
+      return self.isTappable
+    case .liquidGlass:
+      return false
+    }
+  }
 }

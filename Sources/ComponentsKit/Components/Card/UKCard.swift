@@ -20,6 +20,8 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
 
   /// The primary content of the card, provided as a custom view.
   public let content: Content
+  /// The visual effect container used to render blur and liquid glass card backgrounds.
+  public let backgroundEffectView = UIVisualEffectView()
 
   // MARK: - Public Properties
 
@@ -29,6 +31,7 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
   /// A Boolean value indicating whether the button is pressed.
   public private(set) var isPressed: Bool = false {
     didSet {
+      guard self.model.isTapAnimationEnabled else { return }
       UIView.animate(withDuration: 0.05, delay: 0, options: [.curveEaseOut]) {
         self.transform = self.isPressed
         ? .init(
@@ -82,7 +85,8 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
 
   /// Sets up the card's subviews.
   open func setup() {
-    self.addSubview(self.content)
+    self.addSubview(self.backgroundEffectView)
+    self.backgroundEffectView.contentView.addSubview(self.content)
 
     if #available(iOS 17.0, *) {
       self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
@@ -96,24 +100,29 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
   /// Applies styling to the card's subviews.
   open func style() {
     Self.Style.mainView(self, model: self.model)
+    Self.Style.backgroundEffectView(self.backgroundEffectView, model: self.model)
   }
 
   // MARK: - Layout
 
   /// Configures the layout.
   open func layout() {
+    self.backgroundEffectView.allEdges()
     self.contentConstraints = LayoutConstraints.merged {
-      self.content.top(self.model.contentPaddings.top)
-      self.content.bottom(self.model.contentPaddings.bottom)
-      self.content.leading(self.model.contentPaddings.leading)
-      self.content.trailing(self.model.contentPaddings.trailing)
+      self.content.top(self.model.contentPaddings.top, to: self.backgroundEffectView.contentView)
+      self.content.bottom(self.model.contentPaddings.bottom, to: self.backgroundEffectView.contentView)
+      self.content.leading(self.model.contentPaddings.leading, to: self.backgroundEffectView.contentView)
+      self.content.trailing(self.model.contentPaddings.trailing, to: self.backgroundEffectView.contentView)
     }
   }
 
   open override func layoutSubviews() {
     super.layoutSubviews()
 
-    self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+    self.layer.shadowPath = UIBezierPath(
+      roundedRect: self.bounds,
+      cornerRadius: self.model.cornerRadius.value
+    ).cgPath
   }
 
   // MARK: - Update
@@ -192,17 +201,41 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
 
   @objc private func handleTraitChanges() {
     Self.Style.mainView(self, model: self.model)
+    Self.Style.backgroundEffectView(self.backgroundEffectView, model: self.model)
   }
 }
 
 extension UKCard {
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: Model) {
-      view.backgroundColor = model.backgroundColor.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
-      view.layer.borderWidth = model.borderWidth.value
-      view.layer.borderColor = model.borderColor.cgColor
       view.shadow(model.shadow)
+    }
+    static func backgroundEffectView(_ view: UIVisualEffectView, model: Model) {
+      view.contentView.layer.cornerRadius = model.cornerRadius.value
+      view.layer.cornerRadius = model.cornerRadius.value
+      view.layer.borderColor = model.borderColor.cgColor
+      view.layer.borderWidth = model.borderWidth.value
+      view.clipsToBounds = true
+
+      switch model.backgroundStyle {
+      case .solid:
+        view.effect = nil
+        view.backgroundColor = model.backgroundColor?.uiColor
+      case .blur:
+        view.effect = UIBlurEffect(style: .systemThinMaterial)
+        view.backgroundColor = model.backgroundColor?.uiColor
+      case .liquidGlass:
+        if #available(iOS 26.0, *) {
+          let effect = UIGlassEffect(style: .regular)
+          effect.tintColor = model.backgroundColor?.uiColor
+          effect.isInteractive = model.isTappable
+          view.effect = effect
+          view.backgroundColor = nil
+        } else {
+          view.effect = nil
+        }
+      }
     }
   }
 }
