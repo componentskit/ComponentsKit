@@ -244,32 +244,14 @@ extension UKButton {
       )
     }
     static func backgroundEffectView(_ view: UIVisualEffectView, model: Model) {
-      let cornerRadius = model.cornerRadius.value(for: view.bounds.height)
-      view.contentView.layer.cornerRadius = cornerRadius
-      view.layer.cornerRadius = cornerRadius
-      view.layer.borderColor = model.borderColor?.uiColor.cgColor
-      view.layer.borderWidth = model.borderWidth
-      view.clipsToBounds = true
-
-      switch model.backgroundStyle {
-      case .solid:
-        view.effect = nil
-        view.backgroundColor = model.backgroundColor?.uiColor
-      case .blur:
-        view.effect = UIBlurEffect(style: .systemThinMaterial)
-        view.backgroundColor = model.backgroundColor?.uiColor
-      case .liquidGlass:
-        if #available(iOS 26.0, *) {
-          let effect = UIGlassEffect(style: .regular)
-          effect.tintColor = model.backgroundColor?.uiColor
-          effect.isInteractive = model.isInteractive
-          view.effect = effect
-          view.backgroundColor = nil
-        } else {
-          view.effect = nil
-          view.backgroundColor = model.backgroundColor?.uiColor
-        }
-      }
+      view.setBackgroundStyle(
+        model.backgroundStyle,
+        backgroundColor: model.backgroundColor?.uiColor,
+        borderColor: model.borderColor?.uiColor,
+        borderWidth: model.borderWidth,
+        cornerRadius: model.cornerRadius.value(for: view.bounds.height),
+        isGlassInteractive: model.isInteractive
+      )
     }
     static func titleLabel(_ label: UILabel, model: Model) {
       label.textAlignment = .center

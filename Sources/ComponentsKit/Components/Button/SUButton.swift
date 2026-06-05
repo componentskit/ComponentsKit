@@ -40,9 +40,13 @@ public struct SUButton: View {
       .frame(height: self.model.height)
       .contentShape(.rect)
       .foregroundStyle(self.model.foregroundColor.color)
-      .buttonBackground(
+      .componentBackground(
         shape: RoundedRectangle(cornerRadius: self.model.cornerRadius.value()),
-        model: self.model
+        backgroundStyle: self.model.backgroundStyle,
+        backgroundColor: self.model.backgroundColor?.color,
+        borderColor: self.model.borderColor?.color ?? .clear,
+        borderWidth: self.model.borderWidth,
+        isGlassInteractive: self.model.isInteractive
       )
     }
     .buttonStyle(CustomButtonStyle())
@@ -124,58 +128,5 @@ private struct ButtonImage: View {
 private struct CustomButtonStyle: SwiftUI.ButtonStyle {
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
-  }
-}
-
-extension View {
-  @ViewBuilder
-  fileprivate func buttonBackground<BackgroundShape: InsettableShape>(
-    shape: BackgroundShape,
-    model: ButtonVM
-  ) -> some View {
-    switch model.backgroundStyle {
-    case .solid:
-      self
-        .background(model.backgroundColor?.color ?? .clear)
-        .clipShape(shape)
-        .overlay {
-          shape.strokeBorder(
-            model.borderColor?.color ?? .clear,
-            lineWidth: model.borderWidth
-          )
-        }
-    case .blur:
-      self
-        .background {
-          shape
-            .fill(.thinMaterial)
-            .overlay {
-              shape.strokeBorder(
-                model.borderColor?.color ?? .clear,
-                lineWidth: model.borderWidth
-              )
-            }
-        }
-        .background(model.backgroundColor?.color)
-        .clipShape(shape)
-    case .liquidGlass:
-      if #available(iOS 26.0, *) {
-        self
-          .overlay {
-            shape.strokeBorder(
-              model.borderColor?.color ?? .clear,
-              lineWidth: model.borderWidth
-            )
-          }
-          .glassEffect(
-            .regular
-              .tint(model.backgroundColor?.color)
-              .interactive(model.isInteractive),
-            in: shape
-          )
-      } else {
-        self
-      }
-    }
   }
 }

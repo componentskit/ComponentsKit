@@ -47,9 +47,13 @@ public struct SUCard<Content: View>: View {
   public var body: some View {
     self.content()
       .padding(self.model.contentPaddings.edgeInsets)
-      .cardBackground(
+      .componentBackground(
         shape: RoundedRectangle(cornerRadius: self.model.cornerRadius.value),
-        model: self.model
+        backgroundStyle: self.model.backgroundStyle,
+        backgroundColor: self.model.backgroundColor?.color,
+        borderColor: self.model.borderColor.color,
+        borderWidth: self.model.borderWidth.value,
+        isGlassInteractive: self.model.isTappable
       )
       .shadow(self.model.shadow)
       .observeSize { self.contentSize = $0 }
@@ -70,49 +74,5 @@ public struct SUCard<Content: View>: View {
       )
       .scaleEffect(self.scale, anchor: .center)
       .animation(.easeOut(duration: 0.05), value: self.scale)
-  }
-}
-
-extension View {
-  @ViewBuilder
-  fileprivate func cardBackground<BackgroundShape: InsettableShape>(
-    shape: BackgroundShape,
-    model: CardVM
-  ) -> some View {
-    switch model.backgroundStyle {
-    case .solid:
-      self.background(model.backgroundColor?.color)
-        .clipShape(shape)
-        .overlay(
-          shape
-            .strokeBorder(model.borderColor.color, lineWidth: model.borderWidth.value)
-        )
-    case .blur:
-      self
-        .background {
-          shape
-            .fill(.thinMaterial)
-            .overlay {
-              shape.strokeBorder(model.borderColor.color, lineWidth: model.borderWidth.value)
-            }
-        }
-        .background(model.backgroundColor?.color)
-        .clipShape(shape)
-    case .liquidGlass:
-      if #available(iOS 26.0, *) {
-        self
-          .overlay {
-            shape.strokeBorder(model.borderColor.color, lineWidth: model.borderWidth.value)
-          }
-          .glassEffect(
-            .regular
-              .tint(model.backgroundColor?.color)
-              .interactive(model.isTappable),
-            in: shape
-          )
-      } else {
-        self
-      }
-    }
   }
 }
