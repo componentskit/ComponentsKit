@@ -112,6 +112,7 @@ struct AlertPreview: View {
   private func buttonPickers(for buttonVM: Binding<AlertButtonVM>) -> some View {
     Group {
       AnimationScalePicker(selection: buttonVM.animationScale)
+      BackgroundStylePicker(selection: buttonVM.backgroundStyle)
       ComponentOptionalColorPicker(selection: buttonVM.color)
       ComponentRadiusPicker(selection: buttonVM.cornerRadius) {
         Text("Custom: 20px").tag(ComponentRadius.custom(20))

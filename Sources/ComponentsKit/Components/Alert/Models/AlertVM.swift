@@ -92,6 +92,7 @@ extension AlertVM {
     return ButtonVM {
       $0.title = model.title
       $0.animationScale = model.animationScale
+      $0.backgroundStyle = model.backgroundStyle
       $0.color = model.color
       $0.cornerRadius = model.cornerRadius
       $0.style = model.style
