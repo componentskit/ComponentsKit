@@ -31,7 +31,7 @@ open class RadioGroupItemView<ID: Hashable>: UIView {
 
   // MARK: Initialization
 
-  init(
+  public init(
     isSelected: Bool,
     groupVM: RadioGroupVM<ID>,
     itemVM: RadioItemVM<ID>
@@ -47,7 +47,7 @@ open class RadioGroupItemView<ID: Hashable>: UIView {
     self.layout()
   }
 
-  required init?(coder: NSCoder) {
+  public required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
