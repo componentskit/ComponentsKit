@@ -2,7 +2,7 @@ import AutoLayout
 import UIKit
 
 /// A view representing a single radio button item in a radio group.
-public class RadioGroupItemView<ID: Hashable>: UIView {
+open class RadioGroupItemView<ID: Hashable>: UIView {
   // MARK: Properties
 
   /// A view that represents an outer circle and contains an inner circle.

@@ -28,7 +28,7 @@ import UIKit
 ///
 /// vc.present(bottomModal, animated: true)
 /// ```
-public class UKBottomModalController: UKModalController<BottomModalVM> {
+open class UKBottomModalController: UKModalController<BottomModalVM> {
   // MARK: - Initialization
 
   /// Initializer.

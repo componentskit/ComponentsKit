@@ -28,7 +28,7 @@ import UIKit
 ///
 /// vc.present(centerModal, animated: true)
 /// ```
-public class UKCenterModalController: UKModalController<CenterModalVM> {
+open class UKCenterModalController: UKModalController<CenterModalVM> {
   // MARK: - Initialization
 
   /// Initializer.
