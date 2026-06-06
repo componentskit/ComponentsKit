@@ -17,17 +17,5 @@ extension AvatarVM {
     ///
     /// - Parameter image: See ``UniversalImage``.
     case image(_ image: UniversalImage)
-
-    /// A placeholder that displays an SF Symbol.
-    @available(*, deprecated, message: "Use `image(_:)` instead.")
-    public static func sfSymbol(_ name: String) -> Self {
-      return .image(.init(systemName: name))
-    }
-
-    /// A placeholder that displays a custom icon from an asset catalog.
-    @available(*, deprecated, message: "Use `image(_:)` instead.")
-    public static func icon(_ name: String, _ bundle: Bundle? = nil) -> Self {
-      return .image(.init(name, bundle: bundle))
-    }
   }
 }

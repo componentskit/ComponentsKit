@@ -13,11 +13,5 @@ extension AvatarVM {
     ///
     /// - Parameter image: See ``UniversalImage``.
     case local(_ image: UniversalImage)
-
-    /// An image loaded from a local asset.
-    @available(*, deprecated, message: "Use `local(_:)` instead.")
-    public static func local(_ name: String, _ bundle: Bundle? = nil) -> Self {
-      return .local(.init(name, bundle: bundle))
-    }
   }
 }

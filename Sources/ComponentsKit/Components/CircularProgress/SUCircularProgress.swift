@@ -18,19 +18,6 @@ public struct SUCircularProgress: View {
 
   /// Initializer.
   /// - Parameters:
-  ///   - currentValue: Current progress.
-  ///   - model: A model that defines the appearance properties.
-  @available(*, deprecated, message: "Set `currentValue` in the model instead.")
-  public init(
-    currentValue: CGFloat = 0,
-    model: CircularProgressVM = .init()
-  ) {
-    self.currentValue = currentValue
-    self.model = model
-  }
-
-  /// Initializer.
-  /// - Parameters:
   ///   - model: A model that defines the appearance properties.
   public init(model: CircularProgressVM) {
     self.model = model
