@@ -9,7 +9,7 @@ public struct AlertButtonVM: ComponentVM {
   ///
   /// Defaults to `.medium`.
   public var animationScale: AnimationScale = .medium
-  
+
   /// Defines how the button renders its background.
   ///
   /// Defaults to `.solid`.
