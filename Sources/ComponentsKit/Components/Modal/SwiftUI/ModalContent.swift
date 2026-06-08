@@ -55,11 +55,12 @@ struct ModalContent<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
         .padding(.bottom, self.model.contentPaddings.bottom)
     }
     .frame(maxWidth: self.model.size.maxWidth, alignment: .leading)
-    .background(self.model.preferredBackgroundColor.color)
-    .clipShape(RoundedRectangle(cornerRadius: self.model.cornerRadius.value))
-    .overlay(
-      RoundedRectangle(cornerRadius: self.model.cornerRadius.value)
-        .strokeBorder(UniversalColor.divider.color, lineWidth: self.model.borderWidth.value)
+    .componentBackground(
+      shape: RoundedRectangle(cornerRadius: model.cornerRadius.value),
+      backgroundStyle: self.model.backgroundStyle,
+      backgroundColor: self.model.preferredBackgroundColor?.color,
+      borderColor: UniversalColor.divider.color,
+      borderWidth: self.model.borderWidth.value
     )
     .padding(self.model.outerPaddings.edgeInsets)
   }

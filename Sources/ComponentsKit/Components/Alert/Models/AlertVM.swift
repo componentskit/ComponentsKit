@@ -21,6 +21,9 @@ public struct AlertVM: ComponentVM {
   /// The background color of the alert.
   public var backgroundColor: UniversalColor?
 
+  /// Defines how the alert renders its background.
+  public var backgroundStyle: BackgroundStyle = .solid
+
   /// The border thickness of the alert.
   ///
   /// Defaults to `.small`.
@@ -61,6 +64,7 @@ extension AlertVM {
   var modalVM: CenterModalVM {
     return CenterModalVM {
       $0.backgroundColor = self.backgroundColor
+      $0.backgroundStyle = self.backgroundStyle
       $0.borderWidth = self.borderWidth
       $0.closesOnOverlayTap = self.closesOnOverlayTap
       $0.contentPaddings = self.contentPaddings
@@ -88,6 +92,7 @@ extension AlertVM {
     return ButtonVM {
       $0.title = model.title
       $0.animationScale = model.animationScale
+      $0.backgroundStyle = model.backgroundStyle
       $0.color = model.color
       $0.cornerRadius = model.cornerRadius
       $0.style = model.style

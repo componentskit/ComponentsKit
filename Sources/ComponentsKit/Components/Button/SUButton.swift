@@ -33,15 +33,32 @@ public struct SUButton: View {
       HStack(spacing: self.model.contentSpacing) {
         self.content
       }
+      .font(self.model.preferredFont.font)
+      .lineLimit(1)
+      .padding(.horizontal, self.model.horizontalPadding)
+      .frame(maxWidth: self.model.width)
+      .frame(height: self.model.height)
+      .contentShape(.rect)
+      .foregroundStyle(self.model.foregroundColor.color)
+      .componentBackground(
+        shape: RoundedRectangle(cornerRadius: self.model.cornerRadius.value()),
+        backgroundStyle: self.model.backgroundStyle,
+        backgroundColor: self.model.backgroundColor?.color,
+        borderColor: self.model.borderColor?.color ?? .clear,
+        borderWidth: self.model.borderWidth,
+        isGlassInteractive: self.model.isInteractive
+      )
     }
-    .buttonStyle(CustomButtonStyle(model: self.model))
-    .simultaneousGesture(DragGesture(minimumDistance: 0.0)
-      .onChanged { _ in
-        self.scale = self.model.animationScale.value
-      }
-      .onEnded { _ in
-        self.scale = 1.0
-      }
+    .buttonStyle(CustomButtonStyle())
+    .simultaneousGesture(
+      DragGesture(minimumDistance: 0.0)
+        .onChanged { _ in
+          self.scale = self.model.animationScale.value
+        }
+        .onEnded { _ in
+          self.scale = 1.0
+        },
+      isEnabled: self.model.isCustomTapAnimationEnabled
     )
     .disabled(!self.model.isInteractive)
     .scaleEffect(self.scale, anchor: .center)
@@ -50,7 +67,7 @@ public struct SUButton: View {
 
   @ViewBuilder
   private var content: some View {
-    switch (self.model.isLoading, self.model.imageWithLegacyFallback, self.model.imageLocation) {
+    switch (self.model.isLoading, self.model.image, self.model.imageLocation) {
     case (true, _, _) where self.model.title.isEmpty:
       SULoading(model: self.model.preferredLoadingVM)
     case (true, _, _):
@@ -109,31 +126,7 @@ private struct ButtonImage: View {
 }
 
 private struct CustomButtonStyle: SwiftUI.ButtonStyle {
-  let model: ButtonVM
-
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .font(self.model.preferredFont.font)
-      .lineLimit(1)
-      .padding(.horizontal, self.model.horizontalPadding)
-      .frame(maxWidth: self.model.width)
-      .frame(height: self.model.height)
-      .contentShape(.rect)
-      .foregroundStyle(self.model.foregroundColor.color)
-      .background(self.model.backgroundColor?.color ?? .clear)
-      .clipShape(
-        RoundedRectangle(
-          cornerRadius: self.model.cornerRadius.value()
-        )
-      )
-      .overlay {
-        RoundedRectangle(
-          cornerRadius: self.model.cornerRadius.value()
-        )
-        .strokeBorder(
-          self.model.borderColor?.color ?? .clear,
-          lineWidth: self.model.borderWidth
-        )
-      }
   }
 }

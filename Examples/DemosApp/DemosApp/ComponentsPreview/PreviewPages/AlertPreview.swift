@@ -89,6 +89,7 @@ struct AlertPreview: View {
             Text("Warning Background").tag(UniversalColor.warningBackground)
             Text("Danger Background").tag(UniversalColor.dangerBackground)
           }
+          BackgroundStylePicker(selection: self.$model.backgroundStyle)
           BorderWidthPicker(selection: self.$model.borderWidth)
           Toggle("Closes On Overlay Tap", isOn: self.$model.closesOnOverlayTap)
           Picker("Content Paddings", selection: self.$model.contentPaddings) {
@@ -111,6 +112,7 @@ struct AlertPreview: View {
   private func buttonPickers(for buttonVM: Binding<AlertButtonVM>) -> some View {
     Group {
       AnimationScalePicker(selection: buttonVM.animationScale)
+      BackgroundStylePicker(selection: buttonVM.backgroundStyle)
       ComponentOptionalColorPicker(selection: buttonVM.color)
       ComponentRadiusPicker(selection: buttonVM.cornerRadius) {
         Text("Custom: 20px").tag(ComponentRadius.custom(20))

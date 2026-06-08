@@ -32,6 +32,22 @@ struct AutocapitalizationPicker: View {
   }
 }
 
+// MARK: - BackgroundStylePicker
+
+struct BackgroundStylePicker: View {
+  @Binding var selection: ComponentsKit.BackgroundStyle
+
+  var body: some View {
+    Picker("Background Style", selection: self.$selection) {
+      Text("Solid").tag(ComponentsKit.BackgroundStyle.solid)
+      Text("Blur").tag(ComponentsKit.BackgroundStyle.blur)
+      if #available(iOS 26.0, *) {
+        Text("Liquid Glass").tag(ComponentsKit.BackgroundStyle.liquidGlass)
+      }
+    }
+  }
+}
+
 // MARK: - BorderWidthPicker
 
 struct BorderWidthPicker: View {

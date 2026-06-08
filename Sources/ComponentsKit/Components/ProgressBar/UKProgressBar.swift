@@ -52,24 +52,6 @@ open class UKProgressBar: FullWidthComponent, UKComponent {
 
   /// Initializer.
   /// - Parameters:
-  ///   - initialValue: The initial progress value. Defaults to `0`.
-  ///   - model: A model that defines the appearance properties.
-  @available(*, deprecated, message: "Set `currentValue` in the model instead.")
-  public init(
-    initialValue: CGFloat = 0,
-    model: ProgressBarVM = .init()
-  ) {
-    self.currentValue = initialValue
-    self.model = model
-    super.init(frame: .zero)
-
-    self.setup()
-    self.style()
-    self.layout()
-  }
-
-  /// Initializer.
-  /// - Parameters:
   ///   - model: A model that defines the appearance properties.
   public init(model: ProgressBarVM) {
     self.model = model

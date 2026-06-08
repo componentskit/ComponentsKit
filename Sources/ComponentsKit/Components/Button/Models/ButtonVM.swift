@@ -10,6 +10,11 @@ public struct ButtonVM: ComponentVM {
   /// The color of the button.
   public var color: ComponentColor?
 
+  /// Defines how the button renders its background.
+  ///
+  /// Defaults to `.solid`.
+  public var backgroundStyle: BackgroundStyle = .solid
+
   /// The spacing between the button's title and its image or loading indicator.
   ///
   /// Defaults to `8.0`.
@@ -32,14 +37,6 @@ public struct ButtonVM: ComponentVM {
   ///
   /// Defaults to `.leading`.
   public var imageLocation: ImageLocation = .leading
-
-  /// Defines how image is rendered.
-  @available(*, deprecated, message: "Use `image.withRenderingMode(_:)` instead.")
-  public var imageRenderingMode: ImageRenderingMode?
-
-  /// The source of the image to be displayed.
-  @available(*, deprecated, message: "Use `image` instead.")
-  public var imageSrc: ImageSource?
 
   /// A Boolean value indicating whether the button is enabled or disabled.
   ///
@@ -83,6 +80,14 @@ public struct ButtonVM: ComponentVM {
 extension ButtonVM {
   var isInteractive: Bool {
     self.isEnabled && !self.isLoading
+  }
+  var isCustomTapAnimationEnabled: Bool {
+    switch self.backgroundStyle {
+    case .solid, .blur:
+      return true
+    case .liquidGlass:
+      return false
+    }
   }
   var preferredLoadingVM: LoadingVM {
     return self.loadingVM ?? .init {
@@ -187,30 +192,13 @@ extension ButtonVM {
       }
     }
   }
-  var imageWithLegacyFallback: UniversalImage? {
-    if let image { return image }
-
-    guard let imageSrc else { return nil }
-
-    let image = switch imageSrc {
-    case .sfSymbol(let name):
-      UniversalImage(systemName: name)
-    case .local(let name, let bundle):
-      UniversalImage(name, bundle: bundle)
-    }
-    if let imageRenderingMode {
-      return image.withRenderingMode(imageRenderingMode)
-    } else {
-      return image
-    }
-  }
 }
 
 // MARK: UIKit Helpers
 
 extension ButtonVM {
   var isImageHidden: Bool {
-    return self.isLoading || self.imageWithLegacyFallback.isNil
+    return self.isLoading || self.image.isNil
   }
   func preferredSize(
     for contentSize: CGSize,
@@ -243,9 +231,10 @@ extension ButtonVM {
     || self.font != oldModel.font
     || self.isFullWidth != oldModel.isFullWidth
     || self.isLoading != oldModel.isLoading
-    || self.imageWithLegacyFallback != oldModel.imageWithLegacyFallback
+    || self.image != oldModel.image
     || self.contentSpacing != oldModel.contentSpacing
     || self.title != oldModel.title
+    || self.style != oldModel.style
   }
 }
 

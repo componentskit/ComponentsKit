@@ -47,14 +47,13 @@ public struct SUCard<Content: View>: View {
   public var body: some View {
     self.content()
       .padding(self.model.contentPaddings.edgeInsets)
-      .background(self.model.backgroundColor.color)
-      .cornerRadius(self.model.cornerRadius.value)
-      .overlay(
-        RoundedRectangle(cornerRadius: self.model.cornerRadius.value)
-          .strokeBorder(
-            self.model.borderColor.color,
-            lineWidth: self.model.borderWidth.value
-          )
+      .componentBackground(
+        shape: RoundedRectangle(cornerRadius: self.model.cornerRadius.value),
+        backgroundStyle: self.model.backgroundStyle,
+        backgroundColor: self.model.backgroundColor?.color,
+        borderColor: self.model.borderColor.color,
+        borderWidth: self.model.borderWidth.value,
+        isGlassInteractive: self.model.isTappable
       )
       .shadow(self.model.shadow)
       .observeSize { self.contentSize = $0 }
@@ -71,7 +70,7 @@ public struct SUCard<Content: View>: View {
           .onEnded { _ in
             self.scale = 1.0
           },
-        isEnabled: self.model.isTappable
+        isEnabled: self.model.isTapAnimationEnabled
       )
       .scaleEffect(self.scale, anchor: .center)
       .animation(.easeOut(duration: 0.05), value: self.scale)

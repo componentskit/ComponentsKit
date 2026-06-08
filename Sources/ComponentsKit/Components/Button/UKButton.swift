@@ -18,6 +18,7 @@ open class UKButton: FullWidthComponent, UKComponent {
   /// A Boolean value indicating whether the button is pressed.
   public private(set) var isPressed: Bool = false {
     didSet {
+      guard self.model.isCustomTapAnimationEnabled else { return }
       UIView.animate(withDuration: 0.05, delay: 0, options: [.curveEaseOut]) {
         self.transform = self.isPressed && self.model.isInteractive
         ? .init(
@@ -42,6 +43,9 @@ open class UKButton: FullWidthComponent, UKComponent {
 
   /// An optional image displayed alongside the title.
   public let imageView = UIImageView()
+
+  /// The visual effect container used to render blur and liquid glass button backgrounds.
+  public let backgroundEffectView = UIVisualEffectView()
 
   // MARK: Private Properties
 
@@ -79,7 +83,8 @@ open class UKButton: FullWidthComponent, UKComponent {
   // MARK: Setup
 
   private func setup() {
-    self.addSubview(self.stackView)
+    self.addSubview(self.backgroundEffectView)
+    self.backgroundEffectView.contentView.addSubview(self.stackView)
 
     self.stackView.addArrangedSubview(self.loaderView)
     self.stackView.addArrangedSubview(self.titleLabel)
@@ -101,6 +106,7 @@ open class UKButton: FullWidthComponent, UKComponent {
 
   private func style() {
     Self.Style.mainView(self, model: self.model)
+    Self.Style.backgroundEffectView(self.backgroundEffectView, model: self.model)
     Self.Style.titleLabel(self.titleLabel, model: self.model)
     Self.Style.configureStackView(self.stackView, model: self.model)
     Self.Style.loaderView(self.loaderView, model: self.model)
@@ -110,6 +116,7 @@ open class UKButton: FullWidthComponent, UKComponent {
   // MARK: Layout
 
   private func layout() {
+    self.backgroundEffectView.allEdges()
     self.stackView.center()
 
     self.imageViewConstraints = self.imageView.size(
@@ -121,7 +128,10 @@ open class UKButton: FullWidthComponent, UKComponent {
   open override func layoutSubviews() {
     super.layoutSubviews()
 
-    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
+    let cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
+    self.layer.cornerRadius = cornerRadius
+    self.backgroundEffectView.layer.cornerRadius = cornerRadius
+    self.backgroundEffectView.contentView.layer.cornerRadius = cornerRadius
   }
 
   // MARK: Update
@@ -218,7 +228,8 @@ open class UKButton: FullWidthComponent, UKComponent {
   // MARK: Helpers
 
   @objc private func handleTraitChanges() {
-    self.layer.borderColor = self.model.borderColor?.uiColor.cgColor
+    Self.Style.mainView(self, model: self.model)
+    Self.Style.backgroundEffectView(self.backgroundEffectView, model: self.model)
   }
 }
 
@@ -227,11 +238,19 @@ open class UKButton: FullWidthComponent, UKComponent {
 extension UKButton {
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: Model) {
-      view.layer.borderWidth = model.borderWidth
-      view.layer.borderColor = model.borderColor?.uiColor.cgColor
-      view.backgroundColor = model.backgroundColor?.uiColor
+      view.backgroundColor = nil
       view.layer.cornerRadius = model.cornerRadius.value(
         for: view.bounds.height
+      )
+    }
+    static func backgroundEffectView(_ view: UIVisualEffectView, model: Model) {
+      view.setBackgroundStyle(
+        model.backgroundStyle,
+        backgroundColor: model.backgroundColor?.uiColor,
+        borderColor: model.borderColor?.uiColor,
+        borderWidth: model.borderWidth,
+        cornerRadius: model.cornerRadius.value(for: view.bounds.height),
+        isGlassInteractive: model.isInteractive
       )
     }
     static func titleLabel(_ label: UILabel, model: Model) {
@@ -255,7 +274,7 @@ extension UKButton {
       view.isVisible = model.isLoading
     }
     static func imageView(_ imageView: UIImageView, model: Model) {
-      imageView.image = model.imageWithLegacyFallback?.uiImage
+      imageView.image = model.image?.uiImage
       imageView.contentMode = .scaleAspectFit
       imageView.isHidden = model.isImageHidden
       imageView.tintColor = model.foregroundColor.uiColor

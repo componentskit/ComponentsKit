@@ -17,7 +17,7 @@ struct ModalOverlay<VM: ModalVM>: View {
     Group {
       switch self.model.overlayStyle {
       case .dimmed:
-        Color.black.opacity(0.7)
+        Color.black.opacity(0.35)
       case .blurred:
         Color.clear.background(.ultraThinMaterial)
       case .transparent:

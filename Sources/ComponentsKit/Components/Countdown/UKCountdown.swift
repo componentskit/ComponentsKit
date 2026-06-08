@@ -3,7 +3,7 @@ import Combine
 import UIKit
 
 /// A UIKit timer component that counts down from a specified duration to zero.
-public class UKCountdown: UIView, UKComponent {
+open class UKCountdown: UIView, UKComponent {
   // MARK: - Public Properties
 
   /// A model that defines the appearance properties.
@@ -61,7 +61,7 @@ public class UKCountdown: UIView, UKComponent {
     self.layout()
   }
 
-  required init?(coder: NSCoder) {
+  required public init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 

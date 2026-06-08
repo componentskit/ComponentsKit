@@ -30,7 +30,7 @@ import UIKit
 ///
 /// vc.present(alert, animated: true)
 /// ```
-public class UKAlertController: UKCenterModalController {
+open class UKAlertController: UKCenterModalController {
   // MARK: - Properties
 
   /// A model that defines the appearance properties for an alert.

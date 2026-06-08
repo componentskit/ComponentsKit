@@ -19,6 +19,7 @@ struct ButtonPreview: View {
       }
       Form {
         AnimationScalePicker(selection: self.$model.animationScale)
+        BackgroundStylePicker(selection: self.$model.backgroundStyle)
         ComponentOptionalColorPicker(selection: self.$model.color)
         Picker("Content Spacing", selection: self.$model.contentSpacing) {
           Text("4").tag(CGFloat(4))

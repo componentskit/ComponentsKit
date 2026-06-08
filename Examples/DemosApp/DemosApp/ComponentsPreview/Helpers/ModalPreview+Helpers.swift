@@ -65,6 +65,7 @@ struct ModalPreviewHelpers {
           Text("Warning Background").tag(UniversalColor.warningBackground)
           Text("Danger Background").tag(UniversalColor.dangerBackground)
         }
+        BackgroundStylePicker(selection: self.$model.backgroundStyle)
         BorderWidthPicker(selection: self.$model.borderWidth)
         Toggle("Closes On Overlay Tap", isOn: self.$model.closesOnOverlayTap)
           .disabled(self.footer == nil)
