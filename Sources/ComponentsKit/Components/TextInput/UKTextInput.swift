@@ -200,6 +200,7 @@ extension UKTextInput: UITextViewDelegate {
 // MARK: - Style Helpers
 
 extension UKTextInput {
+  @MainActor
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: TextInputVM) {
       view.backgroundColor = model.backgroundColor.uiColor

@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 /// A model that defines the data and appearance properties for a radio group component.
-public struct RadioGroupVM<ID: Hashable>: ComponentVM {
+public struct RadioGroupVM<ID: Hashable & Sendable>: ComponentVM {
   /// The scaling factor for the button's press animation, with a value between 0 and 1.
   ///
   /// Defaults to `.medium`.

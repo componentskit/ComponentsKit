@@ -126,6 +126,7 @@ Enim habitant laoreet inceptos scelerisque senectus, tellus molestie ut. Eros ri
 
   // MARK: - UIKit
 
+  @MainActor
   static func ukHeader(hasHeader: Bool) -> UKModalController.Content? {
     guard hasHeader else {
       return nil
@@ -139,6 +140,7 @@ Enim habitant laoreet inceptos scelerisque senectus, tellus molestie ut. Eros ri
     }
   }
 
+  @MainActor
   static func ukBody(body: ContentBody) -> UKModalController.Content {
     return { _ in
       let subtitle = UILabel()
@@ -154,36 +156,39 @@ Enim habitant laoreet inceptos scelerisque senectus, tellus molestie ut. Eros ri
     }
   }
 
+  @MainActor
   static func ukFooter(footer: ContentFooter?) -> UKModalController.Content? {
-    return footer.map { footer in
-      return { dismiss in
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 16
+    guard let footer else {
+      return nil
+    }
 
-        let button = UKButton(
-          model: self.footerButtonVM,
-          action: { dismiss(true) }
+    return { dismiss in
+      let stackView = UIStackView()
+      stackView.axis = .vertical
+      stackView.spacing = 16
+
+      let button = UKButton(
+        model: self.footerButtonVM,
+        action: { dismiss(true) }
+      )
+      stackView.addArrangedSubview(button)
+
+      switch footer {
+      case .button:
+        button.model.isEnabled = true
+      case .buttonAndCheckbox:
+        button.model.isEnabled = false
+        let checkbox = UKCheckbox(
+          initialValue: false,
+          model: self.footerCheckboxVM,
+          onValueChange: { isSelected in
+            button.model.isEnabled = isSelected
+          }
         )
-        stackView.addArrangedSubview(button)
-
-        switch footer {
-        case .button:
-          button.model.isEnabled = true
-        case .buttonAndCheckbox:
-          button.model.isEnabled = false
-          let checkbox = UKCheckbox(
-            initialValue: false,
-            model: self.footerCheckboxVM,
-            onValueChange: { isSelected in
-              button.model.isEnabled = isSelected
-            }
-          )
-          stackView.insertArrangedSubview(checkbox, at: 0)
-        }
-
-        return stackView
+        stackView.insertArrangedSubview(checkbox, at: 0)
       }
+
+      return stackView
     }
   }
 
@@ -220,6 +225,7 @@ Enim habitant laoreet inceptos scelerisque senectus, tellus molestie ut. Eros ri
     }
   }
 
+  @MainActor
   static func suFooter(
     isPresented: Binding<Bool>,
     isCheckboxSelected: Binding<Bool>,

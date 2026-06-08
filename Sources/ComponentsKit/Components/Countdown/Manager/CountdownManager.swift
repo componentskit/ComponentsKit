@@ -1,6 +1,6 @@
 import SwiftUI
 
-class CountdownManager: ObservableObject {
+class CountdownManager: ObservableObject, @unchecked Sendable {
   // MARK: - Published Properties
 
   @Published var days: Int = 0
@@ -12,6 +12,10 @@ class CountdownManager: ObservableObject {
 
   private var timer: Timer?
   private var until: Date?
+
+  deinit {
+    self.stop()
+  }
 
   // MARK: - Methods
 

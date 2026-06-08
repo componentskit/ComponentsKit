@@ -1,18 +1,18 @@
 import UIKit
 
+@MainActor
 struct CountdownWidthCalculator {
-  private static let label = UILabel()
-
   private init() {}
 
   static func preferredWidth(
     for attributedText: NSAttributedString,
     model: CountdownVM
   ) -> CGFloat {
-    self.style(self.label, with: model)
-    self.label.attributedText = attributedText
+    let label = UILabel()
+    self.style(label, with: model)
+    label.attributedText = attributedText
 
-    let estimatedSize = self.label.sizeThatFits(UIView.layoutFittingExpandedSize)
+    let estimatedSize = label.sizeThatFits(UIView.layoutFittingExpandedSize)
 
     return estimatedSize.width + 2
   }

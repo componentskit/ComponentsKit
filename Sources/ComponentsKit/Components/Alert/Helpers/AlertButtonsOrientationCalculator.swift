@@ -1,13 +1,11 @@
 import UIKit
 
+@MainActor
 struct AlertButtonsOrientationCalculator {
   enum Orientation {
     case vertical
     case horizontal
   }
-
-  private static let primaryButton = UKButton(model: .init())
-  private static let secondaryButton = UKButton(model: .init())
 
   private init() {}
 
@@ -17,15 +15,15 @@ struct AlertButtonsOrientationCalculator {
       return .vertical
     }
 
-    self.primaryButton.model = primaryButtonVM.updating {
+    let primaryButton = UKButton(model: primaryButtonVM.updating {
       $0.isFullWidth = false
-    }
-    self.secondaryButton.model = secondaryButtonVM.updating {
+    })
+    let secondaryButton = UKButton(model: secondaryButtonVM.updating {
       $0.isFullWidth = false
-    }
+    })
 
-    let primaryButtonWidth = self.primaryButton.intrinsicContentSize.width
-    let secondaryButtonWidth = self.secondaryButton.intrinsicContentSize.width
+    let primaryButtonWidth = primaryButton.intrinsicContentSize.width
+    let secondaryButtonWidth = secondaryButton.intrinsicContentSize.width
 
     // Since the `maxWidth` of the alert is always less than the width of the
     // screen, we can assume that the width of the container is equal to this

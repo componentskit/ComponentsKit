@@ -206,6 +206,7 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
 }
 
 extension UKCard {
+  @MainActor
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: Model) {
       view.layer.cornerRadius = model.cornerRadius.value

@@ -219,6 +219,7 @@ open class UKInputField: FullWidthComponent, UKComponent {
 // MARK: - Style Helpers
 
 extension UKInputField {
+  @MainActor
   fileprivate enum Style {
     static func textFieldContainer(
       _ view: UIView,

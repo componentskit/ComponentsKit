@@ -1,7 +1,7 @@
 import Foundation
 
 /// An enumeration that defines how much a component shrinks or expands during animations.
-public enum AnimationScale: Hashable {
+public enum AnimationScale: Hashable, Sendable {
   /// No scaling is applied, meaning the component remains at its original size.
   case none
   /// A small scaling effect is applied, using a predefined value from the configuration.

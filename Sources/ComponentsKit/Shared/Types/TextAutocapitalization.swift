@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 /// The autocapitalization behavior applied during text input.
-public enum TextAutocapitalization {
+public enum TextAutocapitalization: Sendable {
   /// Do not capitalize anything.
   case never
   /// Capitalize every letter.

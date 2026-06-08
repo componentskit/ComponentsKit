@@ -11,9 +11,9 @@ import UIKit
 ///
 /// This type is intended to be carried in view models and resolved into
 /// platform-specific images by higher-level helpers or components.
-public struct UniversalImage: Hashable {
+public struct UniversalImage: Hashable, @unchecked Sendable {
   /// Internal representation of the image source.
-  private enum ImageRepresentable: Hashable {
+  private enum ImageRepresentable: Hashable, @unchecked Sendable {
     /// An SF Symbol identified by its system name.
     case sfSymbol(String)
     /// An asset catalog image identified by name and an optional bundle.

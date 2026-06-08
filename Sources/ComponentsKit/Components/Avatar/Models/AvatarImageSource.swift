@@ -2,7 +2,7 @@ import Foundation
 
 /// Defines the source options for an avatar image.
 extension AvatarVM {
-  public enum ImageSource: Hashable {
+  public enum ImageSource: Hashable, Sendable {
     /// An image loaded from a remote URL.
     ///
     /// - Parameter url: The URL pointing to the remote image resource.

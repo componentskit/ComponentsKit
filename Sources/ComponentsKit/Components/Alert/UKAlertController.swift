@@ -158,6 +158,7 @@ open class UKAlertController: UKCenterModalController {
 // MARK: - Style Helpers
 
 extension UKAlertController {
+  @MainActor
   fileprivate enum Style {
     static func titleLabel(_ label: UILabel, text: String?) {
       label.text = text

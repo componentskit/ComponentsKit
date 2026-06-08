@@ -1,7 +1,7 @@
 import Foundation
 
 /// A model that defines the data and appearance properties for an item in a radio group.
-public struct RadioItemVM<ID: Hashable> {
+public struct RadioItemVM<ID: Hashable & Sendable>: Sendable {
   /// The unique identifier for the radio item.
   public var id: ID
 

@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// A SwiftUI component that displays a group of radio buttons, allowing users to select one option from multiple choices.
-public struct SURadioGroup<ID: Hashable>: View {
+public struct SURadioGroup<ID: Hashable & Sendable>: View {
   // MARK: Properties
 
   /// A model that defines the appearance properties.

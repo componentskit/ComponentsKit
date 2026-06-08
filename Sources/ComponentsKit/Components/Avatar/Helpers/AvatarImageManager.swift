@@ -1,11 +1,12 @@
 import SwiftUI
 import UIKit
 
+@MainActor
 final class AvatarImageManager: ObservableObject {
   @Published var avatarImage: UIImage
 
   private var model: AvatarVM
-  private static var remoteImagesCache = NSCache<NSString, UIImage>()
+  private static let remoteImagesCache = NSCache<NSString, UIImage>()
 
   init(model: AvatarVM) {
     self.model = model
@@ -41,7 +42,7 @@ final class AvatarImageManager: ObservableObject {
   }
 
   private func downloadImage(url: URL) {
-    Task { @MainActor in
+    Task {
       let request = URLRequest(url: url)
       guard let (data, _) = try? await URLSession.shared.data(for: request),
             let image = UIImage(data: data)

@@ -81,6 +81,7 @@ final class AvatarContainer: UIView {
 // MARK: - Style Helpers
 
 extension AvatarContainer {
+  @MainActor
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: AvatarGroupVM) {
       view.backgroundColor = model.borderColor.uiColor

@@ -252,6 +252,7 @@ open class UKSlider: FullWidthComponent, UKComponent {
 // MARK: - Style Helpers
 
 extension UKSlider {
+  @MainActor
   fileprivate enum Style {
     static func backgroundView(_ view: UIView, model: SliderVM) {
       view.backgroundColor = model.color.background.uiColor

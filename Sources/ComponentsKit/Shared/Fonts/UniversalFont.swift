@@ -3,9 +3,9 @@ import UIKit
 
 /// A structure that represents an universal font that can be used in both UIKit and SwiftUI,
 /// with support for custom and system fonts.
-public enum UniversalFont: Hashable {
+public enum UniversalFont: Hashable, Sendable {
   /// An enumeration that defines the weight of a font.
-  public enum Weight: Hashable {
+  public enum Weight: Hashable, Sendable {
     /// Ultra-light font weight.
     case ultraLight
     /// Thin font weight.

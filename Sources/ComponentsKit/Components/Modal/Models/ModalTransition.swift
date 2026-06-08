@@ -1,7 +1,7 @@
 import Foundation
 
 /// Defines the transition speed options for a modal's appearance and dismissal animations.
-public enum ModalTransition: Hashable {
+public enum ModalTransition: Hashable, Sendable {
   /// No transition is applied; the modal appears and disappears instantly.
   case none
   /// A slow transition speed.

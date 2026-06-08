@@ -2,7 +2,7 @@ import Foundation
 
 extension Theme {
   /// Defines a set of colors that are used for styling components and interfaces.
-  public struct Palette: Initializable, Updatable, Equatable {
+  public struct Palette: Initializable, Updatable, Equatable, Sendable {
     /// The color for the main background of the interface.
     public var background: UniversalColor = .themed(
       light: .hex("#FFFFFF"),

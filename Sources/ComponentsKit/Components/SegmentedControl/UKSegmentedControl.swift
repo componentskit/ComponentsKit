@@ -2,7 +2,7 @@ import AutoLayout
 import UIKit
 
 /// A UIKit component that allows users to choose between multiple segments or options.
-open class UKSegmentedControl<ID: Hashable>: FullWidthComponent, UKComponent {
+open class UKSegmentedControl<ID: Hashable & Sendable>: FullWidthComponent, UKComponent {
   // MARK: Properties
 
   /// A closure that is triggered when a selected segment changes.
@@ -307,6 +307,7 @@ open class UKSegmentedControl<ID: Hashable>: FullWidthComponent, UKComponent {
 // MARK: - Style Helpers
 
 extension UKSegmentedControl {
+  @MainActor
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: Model) {
       view.backgroundColor = model.backgroundColor.uiColor

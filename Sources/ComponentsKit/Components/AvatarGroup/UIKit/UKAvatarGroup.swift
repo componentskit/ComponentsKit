@@ -111,6 +111,7 @@ open class UKAvatarGroup: UIView, UKComponent {
 // MARK: - Style Helpers
 
 extension UKAvatarGroup {
+  @MainActor
   fileprivate enum Style {
     static func stackView(_ view: UIStackView, model: Model) {
       view.axis = .horizontal

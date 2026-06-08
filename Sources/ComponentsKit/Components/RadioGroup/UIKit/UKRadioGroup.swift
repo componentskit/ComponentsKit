@@ -2,7 +2,7 @@ import AutoLayout
 import UIKit
 
 /// A UIKit component that displays a group of radio buttons, allowing users to select one option from multiple choices.
-open class UKRadioGroup<ID: Hashable>: UIView, UKComponent, UIGestureRecognizerDelegate {
+open class UKRadioGroup<ID: Hashable & Sendable>: UIView, UKComponent, UIGestureRecognizerDelegate {
   // MARK: Properties
 
   /// A closure that is triggered when a selected segment changes.
@@ -180,6 +180,7 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent, UIGestureRecognizerD
 // MARK: - Style Helpers
 
 extension UKRadioGroup {
+  @MainActor
   fileprivate enum Style {
     static func stackView(_ stackView: UIStackView, model: Model) {
       stackView.axis = .vertical

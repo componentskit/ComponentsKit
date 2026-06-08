@@ -254,6 +254,7 @@ open class UKCheckbox: UIView, UKComponent {
 // MARK: - Style Helpers
 
 extension UKCheckbox {
+  @MainActor
   fileprivate enum Style {
     static func stackView(_ stackView: UIStackView, model: Model) {
       stackView.axis = .horizontal
