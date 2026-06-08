@@ -194,6 +194,7 @@ open class UKProgressBar: FullWidthComponent, UKComponent {
 // MARK: - Style Helpers
 
 extension UKProgressBar {
+  @MainActor
   fileprivate enum Style {
     static func backgroundView(_ view: UIView, model: ProgressBarVM) {
       view.backgroundColor = model.backgroundColor.uiColor

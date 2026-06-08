@@ -1,7 +1,7 @@
 import Foundation
 
 /// Defines the size options for a modal.
-public enum ModalSize {
+public enum ModalSize: Sendable {
   /// A small modal size.
   case small
   /// A medium modal size.

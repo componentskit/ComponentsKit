@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 /// A model that defines the data and appearance properties for a segmented control component.
-public struct SegmentedControlVM<ID: Hashable>: ComponentVM {
+public struct SegmentedControlVM<ID: Hashable & Sendable>: ComponentVM {
   /// The color of the segmented control.
   public var color: ComponentColor?
 

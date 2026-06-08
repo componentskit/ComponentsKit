@@ -3,11 +3,11 @@ import UIKit
 
 /// A structure that represents an universal color that can be used in both UIKit and SwiftUI,
 /// with light and dark theme variants.
-public struct UniversalColor: Hashable {
+public struct UniversalColor: Hashable, @unchecked Sendable {
   // MARK: - ColorRepresentable
 
   /// An enumeration that defines the possible representations of a color.
-  public enum ColorRepresentable: Hashable {
+  public enum ColorRepresentable: Hashable, @unchecked Sendable {
     /// A color defined by its RGBA components.
     ///
     /// - Parameters:

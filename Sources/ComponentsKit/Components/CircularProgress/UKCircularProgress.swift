@@ -171,6 +171,7 @@ open class UKCircularProgress: UIView, UKComponent {
 // MARK: - Style Helpers
 
 extension UKCircularProgress {
+  @MainActor
   fileprivate enum Style {
     static func backgroundLayer(
       _ layer: CAShapeLayer,

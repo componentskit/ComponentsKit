@@ -1,7 +1,7 @@
 import Foundation
 
 /// Defines the corner radius options for a container's content area.
-public enum ContainerRadius: Hashable {
+public enum ContainerRadius: Hashable, Sendable {
   /// No corner radius is applied, resulting in sharp edges.
   case none
   /// A small corner radius is applied.

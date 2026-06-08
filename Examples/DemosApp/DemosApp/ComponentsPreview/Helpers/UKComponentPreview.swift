@@ -38,6 +38,7 @@ struct UKComponentPreview<View, Model>: UIViewRepresentable where View: UKCompon
   let model: Model
   let view: View
 
+  @MainActor
   init(view: View) {
     self.view = view
     self.model = view.model
@@ -53,6 +54,7 @@ struct UKComponentPreview<View, Model>: UIViewRepresentable where View: UKCompon
 }
 
 extension UKComponent {
+  @MainActor
   var preview: some View {
     UKComponentPreview(view: self)
   }

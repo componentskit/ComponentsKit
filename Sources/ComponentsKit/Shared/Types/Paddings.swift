@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 /// Defines padding values for each edge.
-public struct Paddings: Hashable {
+public struct Paddings: Hashable, Sendable {
   /// The padding value for the top edge.
   public var top: CGFloat
 

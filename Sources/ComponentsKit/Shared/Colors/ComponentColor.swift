@@ -1,7 +1,7 @@
 import Foundation
 
 /// A structure that defines a color set for components.
-public struct ComponentColor: Hashable {
+public struct ComponentColor: Hashable, Sendable {
   // MARK: - Properties
 
   /// The primary color used for the component.

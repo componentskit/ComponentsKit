@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 /// Specifies the text string that displays in the Return key of a keyboard.
-public enum SubmitType {
+public enum SubmitType: Sendable {
   /// Specifies that the title of the Return key is *Done*.
   case done
   /// Specifies that the title of the Return key is *Go*.

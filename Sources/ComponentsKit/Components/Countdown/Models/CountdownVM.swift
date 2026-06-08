@@ -212,6 +212,7 @@ extension CountdownVM {
     || self.locale != oldModel.locale
   }
 
+  @MainActor
   func timeWidth(manager: CountdownManager) -> CGFloat {
     let values: [(Int, CountdownHelpers.Unit)] = [
       (manager.days, .days),

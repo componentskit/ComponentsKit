@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 /// Defines shadow options for components.
-public enum Shadow: Hashable {
+public enum Shadow: Hashable, Sendable {
   /// No shadow is applied.
   case none
   /// A small shadow.

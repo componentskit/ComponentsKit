@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 /// An enumeration that defines the corner radius options for components.
-public enum ComponentRadius: Hashable {
+public enum ComponentRadius: Hashable, Sendable {
   /// No corner radius, resulting in sharp edges.
   case none
   /// A small corner radius.

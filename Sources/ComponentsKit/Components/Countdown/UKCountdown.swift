@@ -65,13 +65,6 @@ open class UKCountdown: UIView, UKComponent {
     fatalError("init(coder:) has not been implemented")
   }
 
-  deinit {
-    self.manager.stop()
-    self.cancellables.forEach {
-      $0.cancel()
-    }
-  }
-
   // MARK: - Setup
 
   private func setup() {
@@ -227,6 +220,7 @@ open class UKCountdown: UIView, UKComponent {
 // MARK: - Style Helpers
 
 extension UKCountdown {
+  @MainActor
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: CountdownVM) {
       view.backgroundColor = .clear

@@ -7,7 +7,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   /// A typealias for content providers, which create views for the header, body, or footer.
   /// The content provider closure receives a dismiss action that can be called to close the modal.
-  public typealias Content = (_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView
+  public typealias Content = @MainActor (_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView
 
   // MARK: - Properties
 
@@ -254,6 +254,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 // MARK: - Style Helpers
 
 extension UKModalController {
+  @MainActor
   enum Style {
     static func overlay(_ view: UIView, model: VM) {
       switch model.overlayStyle {

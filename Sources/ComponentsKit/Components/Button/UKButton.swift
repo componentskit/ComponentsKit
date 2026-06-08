@@ -236,6 +236,7 @@ open class UKButton: FullWidthComponent, UKComponent {
 // MARK: - Style Helpers
 
 extension UKButton {
+  @MainActor
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: Model) {
       view.backgroundColor = nil

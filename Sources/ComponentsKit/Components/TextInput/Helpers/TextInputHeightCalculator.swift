@@ -1,8 +1,7 @@
 import UIKit
 
+@MainActor
 struct TextInputHeightCalculator {
-  private static let textView = UITextView()
-
   private init() {}
 
   static func preferredHeight(
@@ -10,19 +9,20 @@ struct TextInputHeightCalculator {
     model: TextInputVM,
     width: CGFloat
   ) -> CGFloat {
-    self.textView.text = text
-    self.style(self.textView, with: model)
+    let textView = UITextView()
+    textView.text = text
+    self.style(textView, with: model)
 
     let targetSize = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
-    let estimatedHeight = self.textView.sizeThatFits(targetSize).height
+    let estimatedHeight = textView.sizeThatFits(targetSize).height
 
     return estimatedHeight
   }
 
   private static func style(_ textView: UITextView, with model: TextInputVM) {
-    self.textView.isScrollEnabled = false
-    self.textView.font = model.preferredFont.uiFont
-    self.textView.textContainerInset = .init(inset: model.contentPadding)
-    self.textView.textContainer.lineFragmentPadding = 0
+    textView.isScrollEnabled = false
+    textView.font = model.preferredFont.uiFont
+    textView.textContainerInset = .init(inset: model.contentPadding)
+    textView.textContainer.lineFragmentPadding = 0
   }
 }

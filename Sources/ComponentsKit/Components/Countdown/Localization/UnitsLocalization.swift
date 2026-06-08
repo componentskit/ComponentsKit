@@ -3,9 +3,9 @@ import Foundation
 // MARK: - UnitsLocalization
 
 /// A structure that provides localized representations of time units (seconds, minutes, hours, days).
-public struct UnitsLocalization: Equatable {
+public struct UnitsLocalization: Equatable, Sendable {
   /// A structure that represents the localized short and long forms of a single time unit.
-  public struct UnitItemLocalization: Equatable {
+  public struct UnitItemLocalization: Equatable, Sendable {
     /// The short-form representation of the time unit (e.g., "s" for seconds).
     public let short: String
     /// The long-form representation of the time unit (e.g., "Seconds").

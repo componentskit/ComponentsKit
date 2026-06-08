@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 /// Defines the style of line endings.
-public enum LineCap {
+public enum LineCap: Sendable {
   /// The line ends with a semicircular arc that extends beyond the endpoint, creating a rounded appearance.
   case rounded
   /// The line ends exactly at the endpoint with a flat edge.

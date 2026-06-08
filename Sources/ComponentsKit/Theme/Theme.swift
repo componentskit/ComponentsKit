@@ -2,7 +2,7 @@ import Foundation
 
 /// A predefined set of colors and layout attributes that ensure visual consistency across the
 /// application.
-public struct Theme: Initializable, Updatable, Equatable {
+public struct Theme: Initializable, Updatable, Equatable, Sendable {
   // MARK: - Properties
 
   /// The palette of colors.
@@ -26,6 +26,7 @@ extension Theme {
   /// A current instance of `Theme` for global use.
   ///
   /// Triggers `Theme.didChangeThemeNotification` notification when the value changes.
+  nonisolated(unsafe)
   public static var current = Self() {
     didSet {
       NotificationCenter.default.post(

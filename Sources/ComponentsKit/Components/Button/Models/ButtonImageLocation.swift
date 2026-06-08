@@ -2,7 +2,7 @@ import Foundation
 
 /// Specifies the position of the image relative to the button's title.
 extension ButtonVM {
-  public enum ImageLocation {
+  public enum ImageLocation: Sendable {
     /// The image is displayed before the title.
     case leading
     /// The image is displayed after the title.

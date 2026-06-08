@@ -112,6 +112,7 @@ open class UKBadge: UIView, UKComponent {
 // MARK: - Style Helpers
 
 extension UKBadge {
+  @MainActor
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: BadgeVM) {
       view.backgroundColor = model.backgroundColor.uiColor

@@ -1,7 +1,7 @@
 import Foundation
 
 /// The buttons appearance style.
-public enum ButtonStyle: Hashable {
+public enum ButtonStyle: Hashable, Sendable {
   /// A button with a filled background.
   case filled
   /// A button with a transparent background.

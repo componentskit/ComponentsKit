@@ -1,7 +1,7 @@
 import Foundation
 
 /// An enumeration that defines border thickness for components.
-public enum BorderWidth: Hashable {
+public enum BorderWidth: Hashable, Sendable {
   /// No border.
   case none
   /// A small border width.

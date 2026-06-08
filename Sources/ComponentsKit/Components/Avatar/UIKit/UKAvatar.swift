@@ -1,4 +1,4 @@
-import Combine
+@preconcurrency import Combine
 import UIKit
 
 /// A UIKit component that displays a profile picture, initials or fallback icon for a user.
